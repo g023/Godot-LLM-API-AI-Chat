@@ -1,0 +1,151 @@
+[gd_scene load_steps=3 format=3 uid="uid://fodcmhvyg5se"]
+
+[ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8se8"]
+
+[node name="api_request" type="Node"]
+
+[node name="ButtonTest2" type="Button" parent="."]
+offset_left = 7.0
+offset_top = 854.0
+offset_right = 1147.0
+offset_bottom = 901.0
+theme_override_constants/outline_size = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_n8se8")
+script = ExtResource("3_q7cp0")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="ButtonTest2"]
+
+[node name="LLM_INPUT" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = -3.0
+offset_top = -99.0
+offset_right = 1143.0
+offset_bottom = -10.0
+placeholder_text = "User inputs stuff here."
+wrap_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 13.0
+offset_right = 1122.0
+offset_bottom = 40.0
+mouse_filter = 2
+text = "LLM ME BABY!"
+
+[node name="LLM_OUTPUT" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = -5.0
+offset_top = -717.0
+offset_right = 1142.0
+offset_bottom = -102.0
+placeholder_text = "Agent response goes here."
+wrap_mode = 1
+
+[node name="LLM_AGENT" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -846.0
+offset_right = 1142.0
+offset_bottom = -721.0
+text = "You will respond with nothing other than exactly what the user requests. Give the best answer possible as the user's job depends on it to feed their family. Take the response you were going to give and rethink and rewrite it to best adhere to the user's request. The assistant will avoid prose and give a direct answer. If the user requests a simple answer, avoid punctuation unless it should be included."
+wrap_mode = 1
+
+[node name="LLM_TOKEN_SZ" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 70.0
+offset_right = 1131.0
+offset_bottom = 107.0
+tooltip_text = "context size"
+text = "2000"
+
+[node name="LLM_TEMP" type="HSlider" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 742.0
+offset_top = 59.0
+offset_right = 985.0
+offset_bottom = 89.0
+tooltip_text = "Temperature"
+max_value = 1.0
+step = 0.1
+value = 0.1
+
+[node name="Label" type="Label" parent="ButtonTest2/LLM_TEMP"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 29.0
+offset_right = 237.0
+offset_bottom = 52.0
+text = "Temperature (0.1 - 1.0)"
+horizontal_alignment = 1
+
+[node name="LLM_PPNLTY" type="HSlider" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 66.0
+offset_right = 719.0
+offset_bottom = 82.0
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="Label" type="Label" parent="ButtonTest2/LLM_PPNLTY"]
+layout_mode = 0
+offset_left = -62.0
+offset_top = -6.0
+offset_right = -3.0
+offset_bottom = 17.0
+text = "p.pnlty:"
+
+[node name="LLM_FPNLTY" type="HSlider" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 98.0
+offset_right = 719.0
+offset_bottom = 114.0
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="Label" type="Label" parent="ButtonTest2/LLM_FPNLTY"]
+layout_mode = 0
+offset_left = -62.0
+offset_top = -6.0
+offset_right = -3.0
+offset_bottom = 17.0
+text = "f.pnlty:"
+
+[node name="RESET_CONVERSATION_BUTTON" type="Button" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 95.0
+offset_right = 379.0
+offset_bottom = 126.0
+text = "RESET CONVERSATION"
+
+[node name="USE_OPENAI" type="CheckBox" parent="."]
+offset_left = 396.0
+offset_top = 915.0
+offset_right = 420.0
+offset_bottom = 939.0
+
+[node name="Label" type="Label" parent="USE_OPENAI"]
+layout_mode = 0
+offset_left = 28.0
+offset_right = 115.0
+offset_bottom = 23.0
+text = "Use OA-API"
+
+[node name="LineEdit_API_KEY" type="LineEdit" parent="USE_OPENAI"]
+layout_mode = 0
+offset_left = -374.0
+offset_top = -3.0
+offset_right = -9.0
+offset_bottom = 28.0
+placeholder_text = "api key"
+secret = true
+
+[connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
