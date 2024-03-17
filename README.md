@@ -22,7 +22,7 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 
 ## Usage
 
-Scroll down below to the # test area to see how to use the functions in a scene. You can pretty much ignore these as they are covered in the 2d view through the GUI.
+Scroll down below to the # test area in ButtonTest2.gd to see how to use the functions in a scene. 
 
 ## License
 
