@@ -216,6 +216,7 @@ func update_output():
 		chat_container.remove_child(child)
 		child.propagate_call("queue_free", [])
 	
+	var row_count = 0
 	for m in messages:
 		var new_u = user_box.duplicate()
 		var new_a = assistant_box.duplicate()
@@ -233,9 +234,15 @@ func update_output():
 		u_title.text = m.role
 		u_msg.text = m.content
 		
+		# find the update button and set id = to this row increment
+		if(m.role == "system"):
+			var u_btn_update = the_node.get_node('arr_id')
+			u_btn_update.text = str(row_count)
+		
 		print("adding:", m.role , "::::", m.content)
 		chat_container.add_child(the_node)
 		
+		row_count += 1
 		pass
 		
 	# scroll container to bottom

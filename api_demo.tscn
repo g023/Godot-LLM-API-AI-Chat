@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=25 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
 [ext_resource type="Script" path="res://LLM_INPUT.gd" id="2_k8qgm"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://btn_copy.gd" id="6_f17nf"]
 [ext_resource type="StyleBox" uid="uid://fins1ecscv1a" path="res://assistant_message.tres" id="6_nn07k"]
 [ext_resource type="Script" path="res://ScrollContainer_convo.gd" id="8_qhyod"]
+[ext_resource type="Script" path="res://btn_update_assistant_message.gd" id="9_31lym"]
 [ext_resource type="Theme" uid="uid://f63p5wbvmhsm" path="res://theme_input_options.tres" id="10_758b3"]
 [ext_resource type="Script" path="res://FileDialog_saveconvo.gd" id="11_gyqoa"]
 [ext_resource type="Script" path="res://Button_save_prompt.gd" id="11_js6q3"]
@@ -183,10 +184,7 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/normal = ExtResource("4_sv8o5")
-text = "sdfsdfsfsfsf this is some large unbreaking text to show ability to scroll in this area. Here is just some random words typed into this area to fill in the text to give the code something to work with.
-asd
-as
-d
+text = "sdfsdfsfsfsf this is s
 "
 wrap_mode = 1
 scroll_fit_content_height = true
@@ -233,10 +231,24 @@ caret_blink = true
 layout_mode = 2
 size_flags_horizontal = 8
 
+[node name="btn_update" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "apply changes"
+script = ExtResource("9_31lym")
+
 [node name="btn_copy" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer"]
 layout_mode = 2
 text = "copy"
 script = ExtResource("6_f17nf")
+
+[node name="arr_id" type="TextEdit" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+text = "asdasdsa"
 
 [node name="ScrollContainer_convo" type="ScrollContainer" parent="."]
 anchors_preset = 15
@@ -274,7 +286,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -277.0
-offset_bottom = -66.0
+offset_bottom = -41.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -375,6 +387,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(75, 35)
 layout_mode = 2
 size_flags_vertical = 4
+tooltip_text = "Number of tokens allowed for the conversation."
 text = "4096"
 caret_blink = true
 
@@ -388,6 +401,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(50, 35)
 layout_mode = 2
 size_flags_vertical = 4
+tooltip_text = "Temperature (between -1.0 and 1.0 usually)"
 text = "0.0"
 caret_blink = true
 
@@ -519,6 +533,8 @@ text = "  load conversation  "
 script = ExtResource("14_xr3dg")
 
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
+[connection signal="text_changed" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/TextEdit" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_update" method="_on_text_edit_text_changed"]
+[connection signal="button_up" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_update" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_update" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_save_prompt" to="VBoxContainer2/HBoxContainer3/Button_save_prompt" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_load_prompt" to="VBoxContainer2/HBoxContainer3/Button_load_prompt" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_save_assistant" to="VBoxContainer2/HBoxContainer3/Button_save_assistant" method="_on_button_up"]
