@@ -1,12 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://fodcmhvyg5se"]
+[gd_scene load_steps=12 format=3 uid="uid://ckacadt42a56c"]
 
+[ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
+[ext_resource type="Script" path="res://LLM_INPUT.gd" id="2_k8qgm"]
 [ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
+[ext_resource type="StyleBox" uid="uid://crrjbyar3ssu8" path="res://user_title.tres" id="3_uo4ud"]
+[ext_resource type="StyleBox" uid="uid://7sk412qjmfwo" path="res://assistant_title.tres" id="4_i0vq2"]
+[ext_resource type="StyleBox" uid="uid://2qct6loqqbg7" path="res://user_message.tres" id="4_sv8o5"]
+[ext_resource type="Script" path="res://btn_copy.gd" id="6_f17nf"]
+[ext_resource type="StyleBox" uid="uid://fins1ecscv1a" path="res://assistant_message.tres" id="6_nn07k"]
+[ext_resource type="Script" path="res://ScrollContainer_convo.gd" id="8_qhyod"]
+[ext_resource type="Theme" uid="uid://f63p5wbvmhsm" path="res://theme_input_options.tres" id="10_758b3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8se8"]
 
 [node name="api_request" type="Node"]
 
 [node name="ButtonTest2" type="Button" parent="."]
+visible = false
 offset_left = 7.0
 offset_top = 854.0
 offset_right = 1147.0
@@ -25,6 +35,7 @@ offset_right = 1143.0
 offset_bottom = -10.0
 placeholder_text = "User inputs stuff here."
 wrap_mode = 1
+script = ExtResource("2_k8qgm")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ButtonTest2"]
 layout_mode = 0
@@ -37,19 +48,21 @@ text = "LLM ME BABY!"
 
 [node name="LLM_OUTPUT" type="TextEdit" parent="ButtonTest2"]
 layout_mode = 0
-offset_left = -5.0
-offset_top = -717.0
-offset_right = 1142.0
-offset_bottom = -102.0
+offset_left = -4.0
+offset_top = -374.0
+offset_right = 1145.0
+offset_bottom = -144.0
 placeholder_text = "Agent response goes here."
 wrap_mode = 1
 
 [node name="LLM_AGENT" type="TextEdit" parent="ButtonTest2"]
-layout_mode = 0
-offset_left = -4.0
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
 offset_top = -846.0
-offset_right = 1142.0
-offset_bottom = -721.0
+offset_bottom = -718.0
+grow_horizontal = 2
 text = "You will respond with nothing other than exactly what the user requests. Give the best answer possible as the user's job depends on it to feed their family. Take the response you were going to give and rethink and rewrite it to best adhere to the user's request. The assistant will avoid prose and give a direct answer. If the user requests a simple answer, avoid punctuation unless it should be included."
 wrap_mode = 1
 
@@ -126,11 +139,149 @@ offset_right = 379.0
 offset_bottom = 126.0
 text = "RESET CONVERSATION"
 
+[node name="ScrollContainer_template" type="ScrollContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 136.0
+offset_bottom = -520.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_hesce")
+
+[node name="VBoxContainer_convo" type="VBoxContainer" parent="ScrollContainer_template"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer_user" type="VBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "user:"
+fit_content = true
+
+[node name="TextEdit" type="TextEdit" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "sdfsdfsfsfsf this is some large unbreaking text to show ability to scroll in this area. Here is just some random words typed into this area to fill in the text to give the code something to work with.
+asd
+as
+d
+"
+wrap_mode = 1
+scroll_fit_content_height = true
+caret_blink = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="btn_copy" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer"]
+layout_mode = 2
+text = "copy"
+script = ExtResource("6_f17nf")
+
+[node name="VBoxContainer_spacer" type="VBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer_assistant" type="VBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "assistant:"
+fit_content = true
+
+[node name="TextEdit" type="TextEdit" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "sdfsdfsfsfsf
+asd"
+wrap_mode = 1
+scroll_fit_content_height = true
+caret_blink = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="btn_copy" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer"]
+layout_mode = 2
+text = "copy"
+script = ExtResource("6_f17nf")
+
+[node name="ScrollContainer_convo" type="ScrollContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 136.0
+offset_bottom = -279.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_hesce")
+script = ExtResource("8_qhyod")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer_convo"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 136.0
+grow_horizontal = 2
+
+[node name="TextEdit_LLM_AGENT" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+text = "You will respond with nothing other than exactly what the user requests. Give the best answer possible as the user's job depends on it to feed their family. Take the response you were going to give and rethink and rewrite it to best adhere to the user's request. The assistant will avoid prose and give a direct answer. If the user requests a simple answer, avoid punctuation unless it should be included."
+placeholder_text = "Assistant prompt"
+wrap_mode = 1
+caret_blink = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -277.0
+offset_bottom = -66.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextEdit_LLM_INPUT" type="TextEdit" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "User message"
+wrap_mode = 1
+caret_blink = true
+
 [node name="USE_OPENAI" type="CheckBox" parent="."]
-offset_left = 396.0
-offset_top = 915.0
-offset_right = 420.0
-offset_bottom = 939.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 101.0
+offset_right = -104.0
+offset_bottom = 125.0
+grow_horizontal = 0
 
 [node name="Label" type="Label" parent="USE_OPENAI"]
 layout_mode = 0
@@ -147,5 +298,108 @@ offset_right = -9.0
 offset_bottom = 28.0
 placeholder_text = "api key"
 secret = true
+
+[node name="Node" type="Node" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Node"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.207843, 0.282353, 0.494118, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Node"]
+custom_minimum_size = Vector2(0, 40)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -59.0
+offset_right = -13.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+theme = ExtResource("10_758b3")
+
+[node name="Label_tokens" type="Label" parent="Node/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Tokens: "
+vertical_alignment = 1
+
+[node name="TextEdit_tokens" type="TextEdit" parent="Node/HBoxContainer"]
+custom_minimum_size = Vector2(75, 35)
+layout_mode = 2
+size_flags_vertical = 4
+text = "4096"
+caret_blink = true
+
+[node name="Label_temp" type="Label" parent="Node/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "  T:"
+vertical_alignment = 1
+
+[node name="TextEdit_temp" type="TextEdit" parent="Node/HBoxContainer"]
+custom_minimum_size = Vector2(50, 35)
+layout_mode = 2
+size_flags_vertical = 4
+text = "0.0"
+caret_blink = true
+
+[node name="Label_p" type="Label" parent="Node/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "  P"
+vertical_alignment = 1
+
+[node name="TextEdit_p" type="TextEdit" parent="Node/HBoxContainer"]
+custom_minimum_size = Vector2(50, 35)
+layout_mode = 2
+size_flags_vertical = 4
+text = "0.0"
+caret_blink = true
+
+[node name="Label_f" type="Label" parent="Node/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "  F:"
+vertical_alignment = 1
+
+[node name="TextEdit_f" type="TextEdit" parent="Node/HBoxContainer"]
+custom_minimum_size = Vector2(50, 35)
+layout_mode = 2
+size_flags_vertical = 4
+text = "0.0"
+caret_blink = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Node"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -275.0
+offset_top = -57.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+theme = ExtResource("10_758b3")
+
+[node name="Button_reset" type="Button" parent="Node/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "  reset messages  "
+
+[node name="Button_send" type="Button" parent="Node/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "  send message  "
 
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]

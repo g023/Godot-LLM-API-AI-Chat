@@ -1,0 +1,922 @@
+[gd_scene load_steps=8 format=3 uid="uid://fodcmhvyg5se"]
+
+[ext_resource type="Script" path="res://vConvo.gd" id="2_rcwwr"]
+[ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
+[ext_resource type="StyleBox" uid="uid://crrjbyar3ssu8" path="res://user_title.tres" id="3_uo4ud"]
+[ext_resource type="StyleBox" uid="uid://7sk412qjmfwo" path="res://assistant_title.tres" id="4_i0vq2"]
+[ext_resource type="StyleBox" uid="uid://2qct6loqqbg7" path="res://user_message.tres" id="4_sv8o5"]
+[ext_resource type="StyleBox" uid="uid://fins1ecscv1a" path="res://assistant_message.tres" id="6_nn07k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8se8"]
+
+[node name="api_request" type="Node"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ButtonTest2" type="Button" parent="."]
+visible = false
+offset_left = 7.0
+offset_top = 854.0
+offset_right = 1147.0
+offset_bottom = 901.0
+theme_override_constants/outline_size = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_n8se8")
+script = ExtResource("3_q7cp0")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="ButtonTest2"]
+
+[node name="LLM_INPUT" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = -3.0
+offset_top = -99.0
+offset_right = 1143.0
+offset_bottom = -10.0
+placeholder_text = "User inputs stuff here."
+wrap_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 13.0
+offset_right = 1122.0
+offset_bottom = 40.0
+mouse_filter = 2
+text = "LLM ME BABY!"
+
+[node name="LLM_OUTPUT" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = -5.0
+offset_top = -717.0
+offset_right = 1142.0
+offset_bottom = -102.0
+placeholder_text = "Agent response goes here."
+wrap_mode = 1
+
+[node name="LLM_AGENT" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -846.0
+offset_right = 1142.0
+offset_bottom = -721.0
+text = "You will respond with nothing other than exactly what the user requests. Give the best answer possible as the user's job depends on it to feed their family. Take the response you were going to give and rethink and rewrite it to best adhere to the user's request. The assistant will avoid prose and give a direct answer. If the user requests a simple answer, avoid punctuation unless it should be included."
+wrap_mode = 1
+
+[node name="LLM_TOKEN_SZ" type="TextEdit" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 70.0
+offset_right = 1131.0
+offset_bottom = 107.0
+tooltip_text = "context size"
+text = "2000"
+
+[node name="LLM_TEMP" type="HSlider" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 742.0
+offset_top = 59.0
+offset_right = 985.0
+offset_bottom = 89.0
+tooltip_text = "Temperature"
+max_value = 1.0
+step = 0.1
+value = 0.1
+
+[node name="Label" type="Label" parent="ButtonTest2/LLM_TEMP"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 29.0
+offset_right = 237.0
+offset_bottom = 52.0
+text = "Temperature (0.1 - 1.0)"
+horizontal_alignment = 1
+
+[node name="LLM_PPNLTY" type="HSlider" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 66.0
+offset_right = 719.0
+offset_bottom = 82.0
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="Label" type="Label" parent="ButtonTest2/LLM_PPNLTY"]
+layout_mode = 0
+offset_left = -62.0
+offset_top = -6.0
+offset_right = -3.0
+offset_bottom = 17.0
+text = "p.pnlty:"
+
+[node name="LLM_FPNLTY" type="HSlider" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 98.0
+offset_right = 719.0
+offset_bottom = 114.0
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="Label" type="Label" parent="ButtonTest2/LLM_FPNLTY"]
+layout_mode = 0
+offset_left = -62.0
+offset_top = -6.0
+offset_right = -3.0
+offset_bottom = 17.0
+text = "f.pnlty:"
+
+[node name="RESET_CONVERSATION_BUTTON" type="Button" parent="ButtonTest2"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 95.0
+offset_right = 379.0
+offset_bottom = 126.0
+text = "RESET CONVERSATION"
+
+[node name="USE_OPENAI" type="CheckBox" parent="."]
+visible = false
+offset_left = 396.0
+offset_top = 915.0
+offset_right = 420.0
+offset_bottom = 939.0
+
+[node name="Label" type="Label" parent="USE_OPENAI"]
+layout_mode = 0
+offset_left = 28.0
+offset_right = 115.0
+offset_bottom = 23.0
+text = "Use OA-API"
+
+[node name="LineEdit_API_KEY" type="LineEdit" parent="USE_OPENAI"]
+layout_mode = 0
+offset_left = -374.0
+offset_top = -3.0
+offset_right = -9.0
+offset_bottom = 28.0
+placeholder_text = "api key"
+secret = true
+
+[node name="vConvo" type="VBoxContainer" parent="."]
+offset_right = 1143.0
+offset_bottom = 990.0
+script = ExtResource("2_rcwwr")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 14.0
+offset_top = 19.0
+offset_right = -19.0
+offset_bottom = 981.0
+grow_horizontal = 2
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer4"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer4"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer5/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer5/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer5"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer5/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer5/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer6" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer6"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer6/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer6/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer6"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer6/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer6/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer7" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer7"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer7/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer7/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer7"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer7/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer7/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer8" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer8"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer8/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer8/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer8"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer8/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer8/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer9" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer9"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer9/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer9/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer9"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer9/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer9/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer10" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer10"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer10/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer10/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer10"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer10/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer10/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer11" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer11"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer11/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer11/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer11"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer11/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer11/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer12" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer12"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer12/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer12/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer12"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer12/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer12/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer13" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer13"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer13/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "User (Youi):"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer13/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer13"]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="VBoxContainer/VBoxContainer13/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "Ai Assistant"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="VBoxContainer/VBoxContainer13/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.133333, 0.133333, 0.133333, 1)
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "some rich texxt"
+fit_content = true
+scroll_active = false
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label2" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label4" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label5" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label6" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label7" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label8" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label9" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label10" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label11" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label12" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("3_uo4ud")
+text = "hihihihihi"
+
+[node name="Label13" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("4_sv8o5")
+text = "hihihihihi"
+
+[node name="Label14" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("4_i0vq2")
+text = "hihihihihi"
+horizontal_alignment = 2
+
+[node name="Label15" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("6_nn07k")
+text = "hihihihihi"
+
+[node name="Label16" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label17" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label18" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label19" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label20" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label21" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label22" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label23" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label24" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label25" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label26" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label27" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label28" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label29" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label30" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label31" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label32" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label33" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label34" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label35" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label36" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label37" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label38" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label39" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label40" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label41" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label42" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label43" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label44" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label45" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[node name="Label46" type="Label" parent="CanvasLayer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_font_sizes/font_size = 20
+text = "hihihihihi"
+
+[connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]

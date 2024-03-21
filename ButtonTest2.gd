@@ -23,6 +23,12 @@ extends Button
 # scroll down below to the # test area to see how to use the functions in a scene.
 
 # You can pretty much ignore these as they are covered in the 2d view through the GUI.
+
+# Mar 20 - 2024 release: 
+# - redid GUI to be flexible and allow for different resolutions
+# - new style for conversation to prepare for editable conversations
+# - added a copy button to copy content to clipboard from a message
+
 var api_key = "" # for chatgpt
 var url = "http://localhost:1234/v1/chat/completions"
 var temperature = 0.5
@@ -32,6 +38,10 @@ var messages = []
 var frequency_penalty = 0.1
 var presence_penalty = 0.1
 var assistant = "Your name is Bob. You will respond with nothing other than exactly what the user requests. Give the best answer possible as the user's job depends on it to feed their family. Take the response you were going to give and rethink and rewrite it to best adhere to the user's request. The assistant will avoid prose and give a direct answer. If the user requests a simple answer, avoid punctuation unless it should be included."
+
+
+var g_LLM_INPUT
+
 
 func llm_set_assistant(assistant):
 	assistant = assistant # assistant is always the first message
@@ -47,12 +57,12 @@ func llm_add_message(role, message):
 	pass
 
 func llm_get_url(openai=false):
+	var the_url = "http://localhost:1234/v1/chat/completions"
+
 	if openai:
-		var openai_url = "https://api.openai.com/v1/chat/completions"
-		return openai_url
-	else:
-		var url = "http://localhost:1234/v1/chat/completions"
-		return url
+		the_url = "https://api.openai.com/v1/chat/completions"
+		
+	return the_url
 
 func llm_get_messages():
 	# format for sending
@@ -82,15 +92,32 @@ func llm_get_body(model, messages, max_tokens, temperature, frequency_penalty, p
 	# prepend assistant prompt only for the output
 	var send_messages = llm_get_messages()
 	
-	var body = JSON.new().stringify({
-		"messages": send_messages,
-		"temperature": temperature,
-		"frequency_penalty": frequency_penalty,
-		"presence_penalty": presence_penalty,
-		"max_tokens": max_tokens,
-		"model":model, 
-		"stream":false
-	})	
+	var openai = $"../USE_OPENAI".button_pressed
+	
+	var body = ""
+	
+	# get api key
+	if openai:				
+		body = JSON.new().stringify({
+			"messages": send_messages,
+			"temperature": temperature,
+			"frequency_penalty": frequency_penalty,
+			"presence_penalty": presence_penalty,
+			"max_tokens": max_tokens,
+			"model":model, 
+			"stream":false
+		})
+	else: # local llm
+		body = JSON.new().stringify({
+			"messages": send_messages,
+			"temperature": temperature,
+			"frequency_penalty": frequency_penalty,
+			"presence_penalty": presence_penalty,
+			"max_tokens": max_tokens,
+			"model":model, 
+			"stream":false
+		})	
+	
 	print("body:", body)
 	return body
 
@@ -110,6 +137,7 @@ func llm_send_request(url, headers, body):
 # test
 # test
 func llm_send():
+	var g_LLM_AGENT = $"../VBoxContainer/TextEdit_LLM_AGENT"
 	var openai = $"../USE_OPENAI".button_pressed
 	
 	# get api key
@@ -119,34 +147,90 @@ func llm_send():
 	var url = llm_get_url(openai)
 	var headers = llm_get_headers(openai)
 	
-	max_tokens = int($LLM_TOKEN_SZ.text)
-	temperature = float($LLM_TEMP.value)
-	frequency_penalty = float($LLM_FPNLTY.value)
-	presence_penalty = float($LLM_PPNLTY.value)
+	var llm_tokens = $"../Node/HBoxContainer/TextEdit_tokens"
+	var llm_temp = $"../Node/HBoxContainer/TextEdit_temp"
+	var llm_fpnlty = $"../Node/HBoxContainer/TextEdit_f"
+	var llm_ppnlty = $"../Node/HBoxContainer/TextEdit_p"
+	
+	max_tokens = int(llm_tokens.text)
+	temperature = float(llm_temp.text)
+	frequency_penalty = float(llm_fpnlty.text)
+	presence_penalty = float(llm_ppnlty.text)
+	
+	#max_tokens = int($LLM_TOKEN_SZ.text)
+	#temperature = float($LLM_TEMP.value)
+	#frequency_penalty = float($LLM_FPNLTY.value)
+	#presence_penalty = float($LLM_PPNLTY.value)
 
 	# append to the messages array
-	llm_add_message("user", $LLM_INPUT.text)
+	llm_add_message("user", g_LLM_INPUT.text)
 	
-	# set assistant
-	assistant = $LLM_AGENT.text
+	# set assistant (stopped using LLM_AGENT)
+	assistant = g_LLM_AGENT.text
 	
 	var send_msgs = llm_get_messages()
+	if send_msgs == []:
+		return false
 
 	var body = llm_get_body(model, send_msgs, max_tokens, temperature, frequency_penalty, presence_penalty)
 	
 	llm_send_request(url, headers, body)
+	return true
 	pass
 
-
+func update_output():
+	var user_box = $"../ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user"
+	var assistant_box = $"../ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant"
+	
+	var scroll_container = $"../ScrollContainer_convo"
+	var chat_container = $"../ScrollContainer_convo/VBoxContainer"
+	
+	
+	scroll_container.show()
+	
+	
+	for child in chat_container.get_children():
+		chat_container.remove_child(child)
+		child.propagate_call("queue_free", [])
+	
+	for m in messages:
+		var new_u = user_box.duplicate()
+		var new_a = assistant_box.duplicate()
+		
+		var the_node = {}
+		
+		if(m.role == "system"):
+			the_node = assistant_box.duplicate()
+		else:
+			the_node = user_box.duplicate()
+		
+		var u_title	= the_node.get_node("RichTextLabel")
+		var u_msg = the_node.get_node("TextEdit")
+		
+		u_title.text = m.role
+		u_msg.text = m.content
+		
+		print("adding:", m.role , "::::", m.content)
+		chat_container.add_child(the_node)
+		
+		pass
+		
+	# scroll container to bottom
+	$"../ScrollContainer_convo".do_scroll = true
+	
+	# reactivate send
+	$"../Node/HBoxContainer2/Button_send".disabled = false
 
 
 func llm_response_return(result, response_code, headers, body):
 	print("---- received response.")
 	print("---- body:",body.get_string_from_utf8())
+	
 	var response = JSON.parse_string(body.get_string_from_utf8())
 	var message = response["choices"][0]["message"]["content"]
 	print('---- response:', response)
 	print(message)
+	
 	# $LLM_OUTPUT.text = message # old way was just a single message...
 	# append to the messages array
 	llm_add_message("system", message)
@@ -170,7 +254,9 @@ func llm_response_return(result, response_code, headers, body):
 	$LLM_OUTPUT.text = output
 
 	# clear the input
-	$LLM_INPUT.text = ""
+	g_LLM_INPUT.text = ""
+	
+	update_output()
 
 
 
@@ -182,19 +268,32 @@ func llm_response_return(result, response_code, headers, body):
 func _ready():
 	# llm_send() # test
 	$RESET_CONVERSATION_BUTTON.pressed.connect(self._reset_button_pressed.bind(''))
+	g_LLM_INPUT = $"../VBoxContainer2/TextEdit_LLM_INPUT"
+	
+	$"../Node/HBoxContainer2/Button_reset".pressed.connect(self._reset_button_pressed.bind(''))
+	$"../Node/HBoxContainer2/Button_send".pressed.connect(self._send_button_pressed.bind(''))
 	
 func _reset_button_pressed(arg):
 	print("_reset_button_pressed: ", arg)
 	llm_reset() # reset messages
-	$LLM_OUTPUT.text = ""
+	#$LLM_OUTPUT.text = ""
+	var chat_container = $"../ScrollContainer_convo/VBoxContainer"
+	for child in chat_container.get_children():
+		chat_container.remove_child(child)
+		child.propagate_call("queue_free", [])
 	
-
+func _send_button_pressed(arg):
+	$"../Node/HBoxContainer2/Button_send".disabled = true
+	if $"../VBoxContainer2/TextEdit_LLM_INPUT".text == "":
+		$"../Node/HBoxContainer2/Button_send".disabled = false
+	else:
+		llm_send()
 
 
 # to use reset signal attach to the button
 
 func _on_button_up():
-	if $LLM_INPUT.text == "":
+	if g_LLM_INPUT.text == "":
 		return
 		
 	llm_send()
