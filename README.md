@@ -19,10 +19,18 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - temperature is 0 to 1. 0.5 is default.
 - max tokens can really be increased on quite a few models, but 2000 is default.
 - conversations show last response at top of the output viewport to oldest response scrolling off.
+- assistant prompt can be saved/loaded individually
+- save/load conversation will save all but the current prompt area
+- save/load prompt will save the users current prompt area.
+- file dialogs to handle the saving and loading.
+- you can now update the assistant's replies in the conversation window
+- chat messages alternate colors for ease of visibility
+- flexible/responsive viewport accomodates many resolutions and aspect ratios, keeping the content fresh
+- set api key and click checkbox to use remote openai api on your next request
 
 ## Usage
 
-Scroll down below to the # test area in ButtonTest2.gd to see how to use the functions in a scene. 
+Run the project.godot file in your Godot editor window (works with 4.2 at the moment)
 
 ## License
 
