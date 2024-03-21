@@ -17,14 +17,30 @@ func _ready():
 	
 	menu.add_item("Insert Date", MENU_MAX + 1)
 	# Connect callback.
-	menu.id_pressed.connect(_on_item_pressed)
+	menu.id_pressed.connect(_on_mnu_insert_date_pressed)
+	
+	menu.add_item("Ai Assist", MENU_MAX + 2)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 	
 	
-
-func _on_item_pressed(id):
+# menu_item
+func _on_mnu_insert_date_pressed(id):
 	if id == MENU_MAX + 1:
 		insert_text_at_caret(Time.get_date_string_from_system())
+		
+func _on_mnu_ai_assist_pressed():
+	pass
+		
+		
 # END # CONTEXT MENU
+			
+			
+			
+			
+			
+			
+			
 			
 func _unhandled_input(event):
 	
@@ -45,10 +61,13 @@ func _process(delta):
 	
 func timed_autocomplete():
 	print("do_autocomplete()")
-	var selected_text = $"../../VBoxContainer2/TextEdit_LLM_INPUT".get_selected_text()
-	$"../../VBoxContainer2/TextEdit_LLM_INPUT".delete_selection()
-	$"../../VBoxContainer2/TextEdit_LLM_INPUT".insert_text_at_caret ( "xxxxx" )
-	print("LLM_INPUT:", selected_text)
+	
+	# example selected modify for rewriting ai buddy
+	#var selected_text = $"../../VBoxContainer2/TextEdit_LLM_INPUT".get_selected_text()
+	#$"../../VBoxContainer2/TextEdit_LLM_INPUT".delete_selection()
+	#$"../../VBoxContainer2/TextEdit_LLM_INPUT".insert_text_at_caret ( "xxxxx" )
+	#print("LLM_INPUT:", selected_text)
+	
 	# self.text += " asdasdasd"
 	# Get the length of the text in the TextEdit node
 	# var text_length = self.get_text().length()

@@ -1,7 +1,6 @@
-[gd_scene load_steps=25 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=26 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
-[ext_resource type="Script" path="res://LLM_INPUT.gd" id="2_k8qgm"]
 [ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
 [ext_resource type="StyleBox" uid="uid://crrjbyar3ssu8" path="res://user_title.tres" id="3_uo4ud"]
 [ext_resource type="StyleBox" uid="uid://7sk412qjmfwo" path="res://assistant_title.tres" id="4_i0vq2"]
@@ -19,6 +18,8 @@
 [ext_resource type="Script" path="res://FileDialog_save_assistant.gd" id="13_lxim6"]
 [ext_resource type="Script" path="res://FileDialog_load_assistant.gd" id="14_j5j1f"]
 [ext_resource type="Script" path="res://Button_load.gd" id="14_xr3dg"]
+[ext_resource type="Script" path="res://Button_ai_prompt_assist.gd" id="15_mfsed"]
+[ext_resource type="Script" path="res://TextEdit_LLM_INPUT.gd" id="16_goycu"]
 [ext_resource type="Script" path="res://FileDialog_save_prompt.gd" id="17_mtwra"]
 [ext_resource type="Script" path="res://Button_save_assistant.gd" id="17_oeoef"]
 [ext_resource type="Script" path="res://FileDialog_load_prompt.gd" id="18_erfh0"]
@@ -48,7 +49,6 @@ offset_right = 1143.0
 offset_bottom = -10.0
 placeholder_text = "User inputs stuff here."
 wrap_mode = 1
-script = ExtResource("2_k8qgm")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ButtonTest2"]
 layout_mode = 0
@@ -317,12 +317,20 @@ layout_mode = 2
 text = " load assistant  "
 script = ExtResource("18_gibmn")
 
+[node name="Button_ai_prompt_assist" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = "  Ai Prompt Assist  "
+script = ExtResource("15_mfsed")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="VBoxContainer2/HBoxContainer3/Button_ai_prompt_assist"]
+
 [node name="TextEdit_LLM_INPUT" type="TextEdit" parent="VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "User message"
 wrap_mode = 1
 caret_blink = true
+script = ExtResource("16_goycu")
 
 [node name="USE_OPENAI" type="CheckBox" parent="."]
 anchors_preset = 1
@@ -539,6 +547,7 @@ script = ExtResource("14_xr3dg")
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_load_prompt" to="VBoxContainer2/HBoxContainer3/Button_load_prompt" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_save_assistant" to="VBoxContainer2/HBoxContainer3/Button_save_assistant" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_load_assistant" to="VBoxContainer2/HBoxContainer3/Button_load_assistant" method="_on_button_up"]
+[connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_ai_prompt_assist" to="VBoxContainer2/HBoxContainer3/Button_ai_prompt_assist" method="_on_button_up"]
 [connection signal="file_selected" from="FileDialog_save" to="FileDialog_save" method="_on_file_selected"]
 [connection signal="file_selected" from="FileDialog_load" to="FileDialog_load" method="_on_file_selected"]
 [connection signal="file_selected" from="FileDialog_save_assistant" to="FileDialog_save_assistant" method="_on_file_selected"]

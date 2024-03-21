@@ -27,6 +27,7 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - chat messages alternate colors for ease of visibility
 - flexible/responsive viewport accomodates many resolutions and aspect ratios, keeping the content fresh
 - set api key and click checkbox to use remote openai api on your next request
+- cool: added a new Ai LLM prompt rewriting assistant to help you craft your prompts. Will respect openai setting and max tokens. (check in res://Button_ai_prompt_assist.gd for more details). Basically just type something in the prompt window and your selected ai choice will regenerate the prompt and attempt to improve it when you click the [ Ai Prompt Assist ] button. Be aware if using openai standard usage rates apply.
 
 ## Usage
 
