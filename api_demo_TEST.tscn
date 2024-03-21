@@ -12,6 +12,7 @@
 [node name="api_request" type="Node"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -163,11 +164,13 @@ placeholder_text = "api key"
 secret = true
 
 [node name="vConvo" type="VBoxContainer" parent="."]
+visible = false
 offset_right = 1143.0
 offset_bottom = 990.0
 script = ExtResource("2_rcwwr")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 visible = false
@@ -630,6 +633,7 @@ fit_content = true
 scroll_active = false
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer2"]
 anchors_preset = 15
