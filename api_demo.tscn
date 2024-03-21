@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=20 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
 [ext_resource type="Script" path="res://LLM_INPUT.gd" id="2_k8qgm"]
@@ -13,7 +13,11 @@
 [ext_resource type="Script" path="res://FileDialog_saveconvo.gd" id="11_gyqoa"]
 [ext_resource type="Script" path="res://Button_save.gd" id="11_rigmi"]
 [ext_resource type="Script" path="res://FileDialog_load.gd" id="12_6oa4w"]
+[ext_resource type="Script" path="res://FileDialog_save_assistant.gd" id="13_lxim6"]
+[ext_resource type="Script" path="res://FileDialog_load_assistant.gd" id="14_j5j1f"]
 [ext_resource type="Script" path="res://Button_load.gd" id="14_xr3dg"]
+[ext_resource type="Script" path="res://Button_save_assistant.gd" id="17_oeoef"]
+[ext_resource type="Script" path="res://Button_load_assistant.gd" id="18_gibmn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8se8"]
 
@@ -407,6 +411,7 @@ size_flags_horizontal = 8
 text = "  send message  "
 
 [node name="FileDialog_save" type="FileDialog" parent="."]
+title = "Save Conversation"
 initial_position = 2
 size = Vector2i(800, 600)
 access = 2
@@ -415,7 +420,7 @@ filters = PackedStringArray("*.gsav")
 script = ExtResource("11_gyqoa")
 
 [node name="FileDialog_load" type="FileDialog" parent="."]
-title = "Open a File"
+title = "Load Conversation"
 initial_position = 2
 size = Vector2i(800, 600)
 ok_button_text = "Open"
@@ -424,6 +429,26 @@ access = 2
 root_subfolder = "saved"
 filters = PackedStringArray("*.gsav")
 script = ExtResource("12_6oa4w")
+
+[node name="FileDialog_save_assistant" type="FileDialog" parent="."]
+title = "Save Assistant"
+initial_position = 2
+size = Vector2i(800, 600)
+access = 2
+root_subfolder = "saved_assistants"
+filters = PackedStringArray("*.assistsav")
+script = ExtResource("13_lxim6")
+
+[node name="FileDialog_load_assistant" type="FileDialog" parent="."]
+title = "Load Assistant"
+initial_position = 2
+size = Vector2i(800, 600)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+root_subfolder = "saved_assistants"
+filters = PackedStringArray("*.assistsav")
+script = ExtResource("14_j5j1f")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 offset_left = 5.0
@@ -441,8 +466,22 @@ layout_mode = 2
 text = " load "
 script = ExtResource("14_xr3dg")
 
+[node name="Button_save_assistant" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = " save assistant"
+script = ExtResource("17_oeoef")
+
+[node name="Button_load_assistant" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = " load assistant"
+script = ExtResource("18_gibmn")
+
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
 [connection signal="file_selected" from="FileDialog_save" to="FileDialog_save" method="_on_file_selected"]
 [connection signal="file_selected" from="FileDialog_load" to="FileDialog_load" method="_on_file_selected"]
+[connection signal="file_selected" from="FileDialog_save_assistant" to="FileDialog_save_assistant" method="_on_file_selected"]
+[connection signal="file_selected" from="FileDialog_load_assistant" to="FileDialog_load_assistant" method="_on_file_selected"]
 [connection signal="button_up" from="HBoxContainer/Button_save" to="HBoxContainer/Button_save" method="_on_button_up"]
 [connection signal="button_up" from="HBoxContainer/Button_load" to="HBoxContainer/Button_load" method="_on_button_up"]
+[connection signal="button_up" from="HBoxContainer/Button_save_assistant" to="HBoxContainer/Button_save_assistant" method="_on_button_up"]
+[connection signal="button_up" from="HBoxContainer/Button_load_assistant" to="HBoxContainer/Button_load_assistant" method="_on_button_up"]

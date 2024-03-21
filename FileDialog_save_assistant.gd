@@ -23,25 +23,25 @@ func _on_file_dialog_save_file_selected(path):
 
 func get_save_dict():
 	var save_dict = {}
-	
-	var llm_tokens = $"../Node/HBoxContainer/TextEdit_tokens"
-	var llm_temp = $"../Node/HBoxContainer/TextEdit_temp"
-	var llm_fpnlty = $"../Node/HBoxContainer/TextEdit_f"
-	var llm_ppnlty = $"../Node/HBoxContainer/TextEdit_p"
-	
-	
-	var max_tokens = int(llm_tokens.text)
-	var temperature = float(llm_temp.text)
-	var frequency_penalty = float(llm_fpnlty.text)
-	var presence_penalty = float(llm_ppnlty.text)
-	
-	save_dict.messages = $"../ButtonTest2".messages
+	#
+	#var llm_tokens = $"../Node/HBoxContainer/TextEdit_tokens"
+	#var llm_temp = $"../Node/HBoxContainer/TextEdit_temp"
+	#var llm_fpnlty = $"../Node/HBoxContainer/TextEdit_f"
+	#var llm_ppnlty = $"../Node/HBoxContainer/TextEdit_p"
+	#
+	#
+	#var max_tokens = int(llm_tokens.text)
+	#var temperature = float(llm_temp.text)
+	#var frequency_penalty = float(llm_fpnlty.text)
+	#var presence_penalty = float(llm_ppnlty.text)
+	#
+	#save_dict.messages = $"../ButtonTest2".messages
 	save_dict.assistant = $"../VBoxContainer/TextEdit_LLM_AGENT".text
-	
-	save_dict.max_tokens = max_tokens
-	save_dict.temperature = temperature
-	save_dict.frequency_penalty = frequency_penalty
-	save_dict.presence_penalty = presence_penalty
+	#
+	#save_dict.max_tokens = max_tokens
+	#save_dict.temperature = temperature
+	#save_dict.frequency_penalty = frequency_penalty
+	#save_dict.presence_penalty = presence_penalty
 
 	return save_dict
 	
