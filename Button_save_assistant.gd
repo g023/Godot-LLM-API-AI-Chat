@@ -12,5 +12,5 @@ func _process(delta):
 
 
 func _on_button_up():
-	$"../../FileDialog_save_assistant".show()
+	$"../../../FileDialog_save_assistant".show()
 	pass # Replace with function body.

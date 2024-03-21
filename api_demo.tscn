@@ -295,6 +295,16 @@ size_flags_horizontal = 8
 text = "  load prompt  "
 script = ExtResource("12_p7dfr")
 
+[node name="Button_save_assistant" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = " save assistant  "
+script = ExtResource("17_oeoef")
+
+[node name="Button_load_assistant" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = " load assistant  "
+script = ExtResource("18_gibmn")
+
 [node name="TextEdit_LLM_INPUT" type="TextEdit" parent="VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -321,7 +331,7 @@ text = "Use OA-API"
 
 [node name="LineEdit_API_KEY" type="LineEdit" parent="USE_OPENAI"]
 layout_mode = 0
-offset_left = -222.0
+offset_left = -173.0
 offset_top = -3.0
 offset_right = -9.0
 offset_bottom = 28.0
@@ -435,7 +445,7 @@ text = "  send message  "
 [node name="FileDialog_save" type="FileDialog" parent="."]
 title = "Save Conversation"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(500, 600)
 access = 2
 root_subfolder = "saved"
 filters = PackedStringArray("*.gsav")
@@ -444,7 +454,7 @@ script = ExtResource("11_gyqoa")
 [node name="FileDialog_load" type="FileDialog" parent="."]
 title = "Load Conversation"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(500, 600)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
@@ -455,7 +465,7 @@ script = ExtResource("12_6oa4w")
 [node name="FileDialog_save_assistant" type="FileDialog" parent="."]
 title = "Save Assistant"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(500, 600)
 access = 2
 root_subfolder = "saved_assistants"
 filters = PackedStringArray("*.assistsav")
@@ -464,7 +474,7 @@ script = ExtResource("13_lxim6")
 [node name="FileDialog_load_assistant" type="FileDialog" parent="."]
 title = "Load Assistant"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(500, 600)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
@@ -475,7 +485,7 @@ script = ExtResource("14_j5j1f")
 [node name="FileDialog_save_prompt" type="FileDialog" parent="."]
 title = "Save A Prompt"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(500, 600)
 access = 2
 root_subfolder = "saved_prompts"
 filters = PackedStringArray("*.promptsav")
@@ -484,7 +494,7 @@ script = ExtResource("17_mtwra")
 [node name="FileDialog_load_prompt" type="FileDialog" parent="."]
 title = "Load a Prompt"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(500, 600)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
@@ -500,27 +510,19 @@ offset_bottom = 131.0
 
 [node name="Button_save" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = " save "
+text = "  save conversation  "
 script = ExtResource("11_rigmi")
 
 [node name="Button_load" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = " load "
+text = "  load conversation  "
 script = ExtResource("14_xr3dg")
-
-[node name="Button_save_assistant" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-text = " save assistant"
-script = ExtResource("17_oeoef")
-
-[node name="Button_load_assistant" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-text = " load assistant"
-script = ExtResource("18_gibmn")
 
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_save_prompt" to="VBoxContainer2/HBoxContainer3/Button_save_prompt" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_load_prompt" to="VBoxContainer2/HBoxContainer3/Button_load_prompt" method="_on_button_up"]
+[connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_save_assistant" to="VBoxContainer2/HBoxContainer3/Button_save_assistant" method="_on_button_up"]
+[connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_load_assistant" to="VBoxContainer2/HBoxContainer3/Button_load_assistant" method="_on_button_up"]
 [connection signal="file_selected" from="FileDialog_save" to="FileDialog_save" method="_on_file_selected"]
 [connection signal="file_selected" from="FileDialog_load" to="FileDialog_load" method="_on_file_selected"]
 [connection signal="file_selected" from="FileDialog_save_assistant" to="FileDialog_save_assistant" method="_on_file_selected"]
@@ -529,5 +531,3 @@ script = ExtResource("18_gibmn")
 [connection signal="file_selected" from="FileDialog_load_prompt" to="FileDialog_load_prompt" method="_on_file_selected"]
 [connection signal="button_up" from="HBoxContainer/Button_save" to="HBoxContainer/Button_save" method="_on_button_up"]
 [connection signal="button_up" from="HBoxContainer/Button_load" to="HBoxContainer/Button_load" method="_on_button_up"]
-[connection signal="button_up" from="HBoxContainer/Button_save_assistant" to="HBoxContainer/Button_save_assistant" method="_on_button_up"]
-[connection signal="button_up" from="HBoxContainer/Button_load_assistant" to="HBoxContainer/Button_load_assistant" method="_on_button_up"]
