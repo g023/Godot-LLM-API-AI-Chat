@@ -42,6 +42,29 @@ var assistant = "Your name is Bob. You will respond with nothing other than exac
 
 var g_LLM_INPUT
 
+func get_save_dict():
+	var save_dict = {}
+	
+	var llm_tokens = $"../Node/HBoxContainer/TextEdit_tokens"
+	var llm_temp = $"../Node/HBoxContainer/TextEdit_temp"
+	var llm_fpnlty = $"../Node/HBoxContainer/TextEdit_f"
+	var llm_ppnlty = $"../Node/HBoxContainer/TextEdit_p"
+	
+	
+	max_tokens = int(llm_tokens.text)
+	temperature = float(llm_temp.text)
+	frequency_penalty = float(llm_fpnlty.text)
+	presence_penalty = float(llm_ppnlty.text)
+	
+	save_dict.messages = messages
+	save_dict.assistant = assistant
+	
+	save_dict.max_tokens = max_tokens
+	save_dict.temperature = temperature
+	save_dict.frequency_penalty = frequency_penalty
+	save_dict.presence_penalty = presence_penalty
+	
+	
 
 func llm_set_assistant(assistant):
 	assistant = assistant # assistant is always the first message
@@ -251,7 +274,7 @@ func llm_response_return(result, response_code, headers, body):
 		output += msg["role"] + ": " + msg["content"] + "\r\n-----\r\n"
 
 
-	$LLM_OUTPUT.text = output
+	$LLM_OUTPUT.text = output # obsolete
 
 	# clear the input
 	g_LLM_INPUT.text = ""

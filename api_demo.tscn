@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=16 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
 [ext_resource type="Script" path="res://LLM_INPUT.gd" id="2_k8qgm"]
@@ -10,6 +10,10 @@
 [ext_resource type="StyleBox" uid="uid://fins1ecscv1a" path="res://assistant_message.tres" id="6_nn07k"]
 [ext_resource type="Script" path="res://ScrollContainer_convo.gd" id="8_qhyod"]
 [ext_resource type="Theme" uid="uid://f63p5wbvmhsm" path="res://theme_input_options.tres" id="10_758b3"]
+[ext_resource type="Script" path="res://FileDialog_saveconvo.gd" id="11_gyqoa"]
+[ext_resource type="Script" path="res://Button_save.gd" id="11_rigmi"]
+[ext_resource type="Script" path="res://FileDialog_load.gd" id="12_6oa4w"]
+[ext_resource type="Script" path="res://Button_load.gd" id="14_xr3dg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8se8"]
 
@@ -402,4 +406,43 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "  send message  "
 
+[node name="FileDialog_save" type="FileDialog" parent="."]
+initial_position = 2
+size = Vector2i(800, 600)
+access = 2
+root_subfolder = "saved"
+filters = PackedStringArray("*.gsav")
+script = ExtResource("11_gyqoa")
+
+[node name="FileDialog_load" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(800, 600)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+root_subfolder = "saved"
+filters = PackedStringArray("*.gsav")
+script = ExtResource("12_6oa4w")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 5.0
+offset_top = 95.0
+offset_right = 161.0
+offset_bottom = 131.0
+
+[node name="Button_save" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = " save "
+script = ExtResource("11_rigmi")
+
+[node name="Button_load" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = " load "
+script = ExtResource("14_xr3dg")
+
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
+[connection signal="file_selected" from="FileDialog_save" to="FileDialog_save" method="_on_file_selected"]
+[connection signal="file_selected" from="FileDialog_load" to="FileDialog_load" method="_on_file_selected"]
+[connection signal="button_up" from="HBoxContainer/Button_save" to="HBoxContainer/Button_save" method="_on_button_up"]
+[connection signal="button_up" from="HBoxContainer/Button_load" to="HBoxContainer/Button_load" method="_on_button_up"]
