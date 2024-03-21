@@ -10,10 +10,13 @@ config_version=5
 
 [application]
 
-config/name="LLM_Local_or_Remote_API_GPT_CHAT_Access"
+config/name="LLM Local or Remote API GPT Chat Access"
+config/description="https://github.com/g023/Godot-LLM-API-AI-Chat
+"
+config/version="0.01a"
 run/main_scene="res://api_demo.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://logo.svg"
 
 [display]
 
