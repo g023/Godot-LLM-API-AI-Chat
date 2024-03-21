@@ -235,9 +235,9 @@ func update_output():
 		u_msg.text = m.content
 		
 		# find the update button and set id = to this row increment
-		if(m.role == "system"):
-			var u_btn_update = the_node.get_node('arr_id')
-			u_btn_update.text = str(row_count)
+		#if(m.role == "system"):
+		var u_btn_update = the_node.get_node('arr_id')
+		u_btn_update.text = str(row_count)
 		
 		print("adding:", m.role , "::::", m.content)
 		chat_container.add_child(the_node)

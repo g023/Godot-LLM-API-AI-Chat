@@ -1,10 +1,11 @@
-[gd_scene load_steps=26 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=27 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
 [ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
 [ext_resource type="StyleBox" uid="uid://crrjbyar3ssu8" path="res://user_title.tres" id="3_uo4ud"]
 [ext_resource type="StyleBox" uid="uid://7sk412qjmfwo" path="res://assistant_title.tres" id="4_i0vq2"]
 [ext_resource type="StyleBox" uid="uid://2qct6loqqbg7" path="res://user_message.tres" id="4_sv8o5"]
+[ext_resource type="Script" path="res://btn_delete.gd" id="5_1ix5k"]
 [ext_resource type="Script" path="res://btn_copy.gd" id="6_f17nf"]
 [ext_resource type="StyleBox" uid="uid://fins1ecscv1a" path="res://assistant_message.tres" id="6_nn07k"]
 [ext_resource type="Script" path="res://ScrollContainer_convo.gd" id="8_qhyod"]
@@ -194,10 +195,23 @@ caret_blink = true
 layout_mode = 2
 size_flags_horizontal = 8
 
+[node name="btn_delete" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer"]
+layout_mode = 2
+text = "delete"
+script = ExtResource("5_1ix5k")
+
 [node name="btn_copy" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer"]
 layout_mode = 2
 text = "copy"
 script = ExtResource("6_f17nf")
+
+[node name="arr_id" type="TextEdit" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+text = "asdasdsa"
 
 [node name="VBoxContainer_spacer" type="VBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo"]
 custom_minimum_size = Vector2(0, 20)
@@ -231,6 +245,11 @@ caret_blink = true
 layout_mode = 2
 size_flags_horizontal = 8
 
+[node name="btn_delete" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer"]
+layout_mode = 2
+text = "delete"
+script = ExtResource("5_1ix5k")
+
 [node name="btn_update" type="Button" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer"]
 layout_mode = 2
 disabled = true
@@ -251,6 +270,7 @@ size_flags_stretch_ratio = 0.0
 text = "asdasdsa"
 
 [node name="ScrollContainer_convo" type="ScrollContainer" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -474,7 +494,7 @@ filters = PackedStringArray("*.gsav")
 script = ExtResource("11_gyqoa")
 
 [node name="FileDialog_load" type="FileDialog" parent="."]
-title = "Load Conversation"
+title = "Open a File"
 initial_position = 2
 size = Vector2i(500, 600)
 ok_button_text = "Open"
@@ -494,7 +514,7 @@ filters = PackedStringArray("*.assistsav")
 script = ExtResource("13_lxim6")
 
 [node name="FileDialog_load_assistant" type="FileDialog" parent="."]
-title = "Load Assistant"
+title = "Open a File"
 initial_position = 2
 size = Vector2i(500, 600)
 ok_button_text = "Open"
@@ -514,7 +534,7 @@ filters = PackedStringArray("*.promptsav")
 script = ExtResource("17_mtwra")
 
 [node name="FileDialog_load_prompt" type="FileDialog" parent="."]
-title = "Load a Prompt"
+title = "Open a File"
 initial_position = 2
 size = Vector2i(500, 600)
 ok_button_text = "Open"
@@ -541,7 +561,9 @@ text = "  load conversation  "
 script = ExtResource("14_xr3dg")
 
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
+[connection signal="button_up" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer/btn_delete" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer/btn_delete" method="_on_button_up"]
 [connection signal="text_changed" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/TextEdit" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_update" method="_on_text_edit_text_changed"]
+[connection signal="button_up" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_delete" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_delete" method="_on_button_up"]
 [connection signal="button_up" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_update" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_update" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_save_prompt" to="VBoxContainer2/HBoxContainer3/Button_save_prompt" method="_on_button_up"]
 [connection signal="button_up" from="VBoxContainer2/HBoxContainer3/Button_load_prompt" to="VBoxContainer2/HBoxContainer3/Button_load_prompt" method="_on_button_up"]
