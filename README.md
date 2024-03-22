@@ -33,7 +33,8 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - now v0.2a after binary release. That should clear up the weird version issue.
 - ai prompt assist button now disables on click until response received.
 - empty assistant was causing issues so now set a default in ButtonTest2.gd -> llm_get_messages(): You are an AI assistant.
-
+- selected text ai assistant via context menu in prompt now works. Just select the text and right click mouse button and select "Ai Assist:Selection Clean" to try out
+-- see TextEdit_LLM_INPUT script to modify the prompt. I know its ugly but it works kinda okish.
 
 
 ## Usage

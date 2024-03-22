@@ -352,6 +352,8 @@ wrap_mode = 1
 caret_blink = true
 script = ExtResource("16_goycu")
 
+[node name="HTTPRequest" type="HTTPRequest" parent="VBoxContainer2/TextEdit_LLM_INPUT"]
+
 [node name="USE_OPENAI" type="CheckBox" parent="."]
 anchors_preset = 1
 anchor_left = 1.0
