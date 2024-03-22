@@ -242,7 +242,7 @@ func llm_send():
 
 	### BEGIN :: Change this part
 	var selected_text = $"../../VBoxContainer2/TextEdit_LLM_INPUT".get_selected_text()
-	assistant = "You are a text insertion agent. User will give you a string of text and you are to optimize and rework it to fix any inconsistencies. You will just return the fixed string of text and nothing else. Do not respond with double quotes."
+	assistant = "You are a text insertion agent. User will give you a string of text and you are to optimize and rework it to fix any inconsistencies. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
 	var prompt = "the string: \"" + selected_text + "\""
 	llm_add_message("user",prompt)
 	
