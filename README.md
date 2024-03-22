@@ -52,7 +52,7 @@ This project was created by [g023](https://github.com/g023).
 
 ## Version
 
-0.1a
+0.2a
 
 ## Note
 
