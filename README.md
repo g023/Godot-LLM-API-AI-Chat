@@ -29,10 +29,18 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - set api key and click checkbox to use remote openai api on your next request
 - cool: added a new Ai LLM prompt rewriting assistant to help you craft your prompts. Will respect openai setting and max tokens. (check in res://Button_ai_prompt_assist.gd for more details). Basically just type something in the prompt window and your selected ai choice will regenerate the prompt and attempt to improve it when you click the [ Ai Prompt Assist ] button. Be aware if using openai standard usage rates apply.
 - added delete button to each conversation row
+- end first release (0.01a - was labelled in code 0.1a but whatever)
+- now v0.2a after binary release. That should clear up the weird version issue.
+- ai prompt assist button now disables on click until response received.
+- empty assistant was causing issues so now set a default in ButtonTest2.gd -> llm_get_messages(): You are an AI assistant.
+
+
 
 ## Usage
 
-Run the project.godot file in your Godot editor window (works with 4.2 at the moment)
+- Launch a local openai compatible LLM server (such as LM Studio) if you do not intent to use openai, or if you want to use along side openai
+- Run the project.godot file in your Godot editor window (works with 4.2 at the moment) or one of the distribution binaries (Windows or Linux)
+
 
 ## License
 

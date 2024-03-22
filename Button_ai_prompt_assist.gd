@@ -3,7 +3,7 @@ extends Button
 # Program: Godot 4 LLM API AI CHAT - Local and Remote AI API Access Using GDScript
 # License: BSD-3-Clause License (https://opensource.org/licenses/BSD-3-Clause)
 # Author: https://github.com/g023
-# Version: 0.1a
+# Version: 0.2a
 # This is an example Ai Assistant that rewrites the prompt for the user to attempt to make a better prompt.
 
 var api_key = "" # for chatgpt
@@ -166,7 +166,8 @@ func llm_response_return(result, response_code, headers, body):
 	print(message)
 	
 	$"../../TextEdit_LLM_INPUT".text = message
-	
+	$".".disabled = false
+
 
 
 
@@ -183,4 +184,5 @@ func _ready():
 
 # to use reset signal attach to the button
 func _on_button_up():
+	$".".disabled = true
 	llm_send()

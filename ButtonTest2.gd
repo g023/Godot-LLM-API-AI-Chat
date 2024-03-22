@@ -3,7 +3,7 @@ extends Button
 # Program: Godot 4 LLM API AI CHAT - Local and Remote AI API Access Using GDScript
 # License: BSD-3-Clause License (https://opensource.org/licenses/BSD-3-Clause)
 # Author: https://github.com/g023
-# Version: 0.1a
+# Version: 0.2a
 # Short Description: A simple chat application for Godot 4+ that uses the LLM API to send and receive messages from an OpenAI compatible API.
 # Categories: AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assistant, Conversational AI,GDScript
 
@@ -90,10 +90,17 @@ func llm_get_url(openai=false):
 func llm_get_messages():
 	# format for sending
 	var send_messages = []
+	# if assistant != "":
+	
+	if assistant == "":
+		print("empty assistant")
+		assistant = "You are an AI assistant."
+	
 	send_messages.append({
 		"role":"assistant",
 		"content":assistant
 	})
+		
 	for msg in messages:
 		send_messages.append(msg)
 	return send_messages
@@ -194,6 +201,7 @@ func llm_send():
 	var send_msgs = llm_get_messages()
 	if send_msgs == []:
 		return false
+		
 
 	var body = llm_get_body(model, send_msgs, max_tokens, temperature, frequency_penalty, presence_penalty)
 	
