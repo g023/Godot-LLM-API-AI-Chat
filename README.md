@@ -35,6 +35,10 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - empty assistant was causing issues so now set a default in ButtonTest2.gd -> llm_get_messages(): You are an AI assistant.
 - selected text ai assistant via context menu in prompt now works. Just select the text and right click mouse button and select "Ai Assist:Selection Clean" to try out
 -- see TextEdit_LLM_INPUT script to modify the prompt. I know its ugly but it works kinda okish.
+- added translate to chinese, translate to english ai assistants for the prompt area in the prompt text area. Left click to view the context menu to access these new assistants.
+- cleaned up the ai assistant code to make it easier to add more assistants (TextEdit_LLM_INPUT)
+* I figure the language translation function would help access the powers of foreign language models by allowing ai to help us translate to the natural language of those llms.
+* also prompt assist button makes prompt writing a little quicker and easier
 
 
 ## Usage
