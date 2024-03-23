@@ -8,7 +8,6 @@ var last_key_down = -1 # used for autocomplete
 
 var last_selected_text = ""
 
-	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# $".".set_completion(true)
@@ -35,6 +34,14 @@ func _ready():
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 	
 	menu.add_item("Ai Assist: Translate to Chinese", MENU_MAX + 4)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+
+	menu.add_item("Ai Assist: Simplify (Compress)", MENU_MAX + 5)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+		
+	menu.add_item("Ai Assist: Expand (Decompress)", MENU_MAX + 6)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 		
@@ -100,11 +107,9 @@ func _on_mnu_ai_assist_pressed(id):
 			
 	if id == MENU_MAX + 4:
 		print("ai assist context menu - translate to chinese")
-		
 		if not g_ai_assist_busy:
 			var selected_text = $".".get_selected_text()
 			print("selected text:", selected_text)
-
 			if selected_text.strip_edges() == "":
 				print("empty input. ignoring.")
 			else:			
@@ -112,12 +117,53 @@ func _on_mnu_ai_assist_pressed(id):
 				var the_selected_text = $".".get_selected_text()
 				var the_assistant = "You are a master translater that can translate from many languages to the best translation of English to Mandaring possible. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
 				var the_prompt = "the string: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-				
+				llm_send_short(the_assistant, the_prompt, 8000, 0.0, 0.0, 0.0, rr)
 		else:
 			print("assistant busy")
 			
 			
+
+	if id == MENU_MAX + 5:
+		print("ai assist context menu - simplify")
+		if not g_ai_assist_busy:
+			var selected_text = $".".get_selected_text()
+			print("selected text:", selected_text)
+			if selected_text.strip_edges() == "":
+				print("empty input. ignoring.")
+			else:			
+				g_ai_assist_busy = true
+				var the_selected_text = $".".get_selected_text()
+				var the_assistant = "You will at most return 3 sentences. You are a master simplification agent that understands how to rewrite a given string into a minimalist, optimized, enhanced and simplified version of itself. You use as few sentences as possible to convey the original string's idea. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				var the_prompt = "the string: \"" + the_selected_text + "\""
+				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
+		else:
+			print("assistant busy")
+			
+
+
+			
+
+	if id == MENU_MAX + 6:
+		print("ai assist context menu - expand")
+		if not g_ai_assist_busy:
+			var selected_text = $".".get_selected_text()
+			print("selected text:", selected_text)
+			if selected_text.strip_edges() == "":
+				print("empty input. ignoring.")
+			else:			
+				g_ai_assist_busy = true
+				var the_selected_text = $".".get_selected_text()
+				# first version was extremely nerdy sounding
+				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				var the_assistant = "You are a master copywriter that understands how to communicate effectively and rewrite a given string to add more depth about the context, optimize the conveyance of the underlying context, and enhance an expanded version of the original given string. You will add a fair bit more content to best communicate the context of the string better. You will increase the string length by 50% with supporting details. You will respond at a grade 7 level. You will avoid uncommon words and phrases. You will attempt to double the returned data's length. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				var the_prompt = "the string: \"" + the_selected_text + "\""
+				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
+		else:
+			print("assistant busy")
+			
+
+
+
 
 
 # rr = response return

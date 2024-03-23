@@ -4,7 +4,7 @@
 
 ## Description
 
-This is a simple chat application built for Godot 4+ that uses the LLM API to send and receive messages from an OpenAI compatible API. It's designed to make it easy to use either LM Studio or OpenAI API. The application currently does not save any data, so every time you launch the app you have to give it a key to use OpenAI. The key is not saved and is only used for the current session.
+This is a simple chat application built for Godot 4+ that uses the LLM API to send and receive messages from an OpenAI compatible API. It's designed to make it easy to use either LM Studio or OpenAI API. The application currently does not save any data, so every time you launch the app you have to give it a key to use OpenAI. The key is not saved and is only used for the current session. Current model from openai the program uses is: gpt-3.5-turbo-16k
 
 ## Categories
 
@@ -40,7 +40,9 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - I figure the language translation function would help access the powers of foreign language models by allowing ai to help us translate to the natural language of those llms.
 - also prompt assist button makes prompt writing a little quicker and easier
 - now have ai assistants when editing system responses in chat. Just select text and right click for context menu to use the assistants to help translate or cleanup.
-
+- added ai agent to assistant response context menu: simplify (tries to reduce selected text down to a more compact version to help reduce context window)
+- added ai agent to assistant response context menu: expand (does the opposite of simplify)
+- increased ai agents max token size window to 16000 tokens to allow for more intelligent agent requests. Be aware of any api costs when using these functions.
 
 ## Usage
 
