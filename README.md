@@ -45,7 +45,7 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - increased ai agents max token size window to 16000 tokens to allow for more intelligent agent requests. Be aware of any api costs when using these functions.
 - added ai agent to assistant response context menu: generic code improver (weak attempt to improve selected code)
 - now stripping triple backticks out of responses from ai agents in assistant responses to normalize and better process returned data
-- added ai agine to assistant response context menu: generic code summarizer (replace selected code with a summary of what the code does in the order that it does it)
+- added ai agent to assistant response context menu: generic code summarizer (replace selected code with a summary of what the code does in the order that it does it)
 
 ## Usage
 
