@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=28 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
 [ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://btn_copy.gd" id="6_f17nf"]
 [ext_resource type="StyleBox" uid="uid://fins1ecscv1a" path="res://assistant_message.tres" id="6_nn07k"]
 [ext_resource type="Script" path="res://ScrollContainer_convo.gd" id="8_qhyod"]
+[ext_resource type="Script" path="res://TextEdit_contextassistants.gd" id="9_0hxj3"]
 [ext_resource type="Script" path="res://btn_update_assistant_message.gd" id="9_31lym"]
 [ext_resource type="Theme" uid="uid://f63p5wbvmhsm" path="res://theme_input_options.tres" id="10_758b3"]
 [ext_resource type="Script" path="res://FileDialog_saveconvo.gd" id="11_gyqoa"]
@@ -240,6 +241,9 @@ asd"
 wrap_mode = 1
 scroll_fit_content_height = true
 caret_blink = true
+script = ExtResource("9_0hxj3")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/TextEdit"]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant"]
 layout_mode = 2

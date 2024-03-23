@@ -1,5 +1,9 @@
 extends TextEdit
 
+# to add to other textareas:
+# add a HTTPRequest to the textedit node and attach this script to the textedit node
+# fix a few associations
+
 var last_key_down = -1 # used for autocomplete
 
 var last_selected_text = ""
@@ -222,7 +226,7 @@ func llm_get_body_short(the_messages, max_tokens, temperature, frequency_penalty
 	# prepend assistant prompt only for the output
 	var send_messages 	= the_messages
 	
-	var openai = $"../../USE_OPENAI".button_pressed
+	var openai = $"../../../../USE_OPENAI".button_pressed
 	
 	var body = ""
 	
@@ -266,11 +270,11 @@ func llm_send_request_short(url, headers, body, return_func):
 
 func llm_send_short(assistant, prompt, max_tokens, temperature, frequency_penalty, presence_penalty, return_Func):
 	## --- begin local or remote
-	var openai = $"../../USE_OPENAI".button_pressed
+	var openai = $"../../../../USE_OPENAI".button_pressed
 	
 	# get api key
 	if openai:
-		var api_key = $"../../USE_OPENAI/LineEdit_API_KEY".text
+		var api_key = $"../../../../USE_OPENAI/LineEdit_API_KEY".text
 	
 	var url 	= llm_get_url(openai)
 	var headers = llm_get_headers(openai)
