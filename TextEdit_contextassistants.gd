@@ -45,6 +45,17 @@ func _ready():
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 		
+	menu.add_item("Ai Assist: Generic Code Improver", MENU_MAX + 7)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+
+	menu.add_item("Ai Assist: Generic Code Summarizer", MENU_MAX + 8)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+
+
+
+
 # menu_item
 func _on_mnu_insert_date_pressed(id):
 	if id == MENU_MAX + 1:
@@ -164,6 +175,48 @@ func _on_mnu_ai_assist_pressed(id):
 
 
 
+	if id == MENU_MAX + 7:
+		print("ai assist context menu - generic code improver")
+		if not g_ai_assist_busy:
+			var selected_text = $".".get_selected_text()
+			print("selected text:", selected_text)
+			if selected_text.strip_edges() == "":
+				print("empty input. ignoring.")
+			else:			
+				g_ai_assist_busy = true
+				var the_selected_text = $".".get_selected_text()
+				# first version was extremely nerdy sounding
+				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				var the_assistant = "You will rewrite the code supplied in the string to be more effective, functional, and more detailed. You will attempt to add more code to improve the code in the string. You will just return the updated string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				var the_prompt = "the code string: \"" + the_selected_text + "\""
+				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
+		else:
+			print("assistant busy")
+			
+
+
+
+
+	if id == MENU_MAX + 8:
+		print("ai assist context menu - generic code summarizer")
+		if not g_ai_assist_busy:
+			var selected_text = $".".get_selected_text()
+			print("selected text:", selected_text)
+			if selected_text.strip_edges() == "":
+				print("empty input. ignoring.")
+			else:			
+				g_ai_assist_busy = true
+				var the_selected_text = $".".get_selected_text()
+				# first version was extremely nerdy sounding
+				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				var the_assistant = "You are a helpful assistant."
+				var the_prompt = "I will provide the source code for a snippet of code that does something. I want you to remove the source code and replace it with code comments describing what the code did in the order that it was done. Show you response as comments in the programming language the source code was in. Use multiline code commenting if appropriate for the programming language code is using. The source code snippet: \"" + the_selected_text + "\""
+				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
+		else:
+			print("assistant busy")
+			
+
+
 
 
 # rr = response return
@@ -179,6 +232,13 @@ func rr(result, response_code, headers, body):
 	# if message has double quotes on either end, remove them
 	if message.begins_with("\"") and message.ends_with("\""):
 		message = message.substr(1, message.length()-2)
+
+	# if message begins and ends with triple backticks, remove the first and last lines of the response
+	if message.begins_with("```") and message.ends_with("```"):
+		var lines = message.split("\n")
+		message = ""
+		for i in range(1, lines.size()-1):
+			message += lines[i] + "\n"
 	
 	#$".".text += message
 	$".".insert_text_at_caret ( message )
