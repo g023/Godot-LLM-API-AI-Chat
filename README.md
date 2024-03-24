@@ -52,6 +52,12 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - Launch a local openai compatible LLM server (such as LM Studio) if you do not intent to use openai, or if you want to use along side openai
 - Run the project.godot file in your Godot editor window (works with 4.2 at the moment) or one of the distribution binaries (Windows or Linux)
 
+## Possible Use Cases
+
+- Ideas to integrate ai api into games programmed in Godot 4 GDScript
+- Roll your own Ai assisted text editors
+- add ai functionality to your Godot 4+ applications
+- * fill in your own ideas here *
 
 ## License
 
