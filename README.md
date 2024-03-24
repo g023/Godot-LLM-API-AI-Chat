@@ -50,6 +50,8 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - added ability for agents to read a certain amount of characters ahead and behind (gave them pre and post memory to make the agent's more "intelligent") to send to the assistant's assistant prompt to help process the regular assistant's prompt
 - added ai agent to assistant response context menu: intelligent code optimizer (reads the text before the selection (500 chars), reads the text after the selection (500 chars), uses that data to inform assistant and then processes the prompt with the selected data and returns the selected data modified to improve the code)
 - these new ai agents with memory will respect the value "Tokens:" in the main gui (same max token return value used in sending messages will be used for the memory powered agents)
+- on that last agent, ability to set a different prompt when sending to openai added
+- <https://twitter.com/g023dev/status/1771795915117891775> for a demo of intelligent code optimizer
 
 ## Usage
 
