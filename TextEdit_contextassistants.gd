@@ -53,8 +53,11 @@ func _ready():
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 
+	menu.add_item("Ai Assist: Intelligent Code Optimizer", MENU_MAX + 9)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)
 
-
+	menu
 
 # menu_item
 func _on_mnu_insert_date_pressed(id):
@@ -129,6 +132,8 @@ func _on_mnu_ai_assist_pressed(id):
 				var the_assistant = "You are a master translater that can translate from many languages to the best translation of English to Mandaring possible. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
 				var the_prompt = "the string: \"" + the_selected_text + "\""
 				llm_send_short(the_assistant, the_prompt, 8000, 0.0, 0.0, 0.0, rr)
+				
+				
 		else:
 			print("assistant busy")
 			
@@ -217,6 +222,98 @@ func _on_mnu_ai_assist_pressed(id):
 			
 
 
+	if id == MENU_MAX + 9:
+		print("ai assist context menu - intelligent code optimizer")
+		# takes previous content and post content and allows use in final prompt and assistant
+		if not g_ai_assist_busy:
+			var selected_text = $".".get_selected_text()
+			print("selected text:", selected_text)
+			if selected_text.strip_edges() == "":
+				print("empty input. ignoring.")
+			else:			
+				g_ai_assist_busy = true
+				var the_whole_text = $".".text
+				var the_selected_text = $".".get_selected_text()
+				#var the_pre_text = $".".get_selection_to_line(get_selection_line())
+				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+				print("selected_line:", get_selection_line())
+				var lines_arr = the_whole_text.split("\n")
+				var the_pre_str = ""
+				var the_post_str = ""
+
+
+				
+				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+				
+				# pre string is the text before the selected text
+				# for i in range(0, get_selection_line()): 
+				# need to redo for i to exclude the amount of lines in selected_text
+				for i in range(0, get_selection_line() - selected_text.split("\n").size()):
+					the_pre_str += lines_arr[i] + "\n"
+				# the whole text
+
+				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+
+
+				# post string is the rest of the text after the selected text
+				for i in range(get_selection_line(), lines_arr.size()):
+					the_post_str += lines_arr[i] + "\n"
+
+
+				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+
+				# only leave the last 500 characters of the pre string
+				if the_pre_str.length() > 500:
+					the_pre_str = the_pre_str.substr(the_pre_str.length()-500, 500)
+				
+				# only leave the first 500 characters of the post string
+				if the_post_str.length() > 500:
+					the_post_str = the_post_str.substr(0, 500)
+
+
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+				print("pre:\r\n\r\n", the_pre_str)
+				print("*** *** *** *** *** ")
+				print("post:\r\n\r\n", the_post_str)
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+				print("*** *** *** *** *** ")
+
+
+
+				print("whole:\r\n\r\n", the_whole_text)
+				# the selected text
+				print("selected:\r\n\r\n", the_selected_text)
+
+
+				print("pre:\r\n\r\n", lines_arr)
+				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+				# first version was extremely nerdy sounding
+				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+				
+				var pre = the_pre_str
+				var post = the_post_str
+
+				var the_assistant = "You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
+				var the_prompt = "the code string: \"" + the_selected_text + "\""
+				
+				
+				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
+				
+				#llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
+				llm_send_short(the_assistant, the_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
+		else:
+			print("assistant busy")
+		
+		# intelligent code optimizer
+
+
+
 
 
 # rr = response return
@@ -243,26 +340,22 @@ func rr(result, response_code, headers, body):
 	#$".".text += message
 	$".".insert_text_at_caret ( message )
 	g_ai_assist_busy = false
+	
+	# END - replace selected text
+	
+	
+	
+	
+	
 ### end -- ai assistant -- selected text cleanup
 ### end -- ai assistant -- selected text cleanup
 ### end -- ai assistant -- selected text cleanup
-	
-	
 
 
-
-	
 # END # CONTEXT MENU
-			
-			
-			
-			
-			
-			
-			
-			
+
+
 func _unhandled_input(event):
-	
 	if event is InputEventKey:
 		print("key down")
 		last_key_down = Time.get_unix_time_from_system()
@@ -297,14 +390,12 @@ func timed_autocomplete():
 
 
 func do_ai_assist():
-
+	
 	pass
 
 func _on_autocomplete(prefix):
 	print("prefix:", prefix)
 	# return filter(lambda w: w.begins_with(prefix), suggestions)
-
-
 
 
 ##### BEGIN CRITICAL ####

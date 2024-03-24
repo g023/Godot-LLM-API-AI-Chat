@@ -46,6 +46,10 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - added ai agent to assistant response context menu: generic code improver (weak attempt to improve selected code)
 - now stripping triple backticks out of responses from ai agents in assistant responses to normalize and better process returned data
 - added ai agent to assistant response context menu: generic code summarizer (replace selected code with a summary of what the code does in the order that it does it)
+*  March 24, 2024 
+- added ability for agents to read a certain amount of characters ahead and behind (gave them pre and post memory to make the agent's more "intelligent") to send to the assistant's assistant prompt to help process the regular assistant's prompt
+- added ai agent to assistant response context menu: intelligent code optimizer (reads the text before the selection (500 chars), reads the text after the selection (500 chars), uses that data to inform assistant and then processes the prompt with the selected data and returns the selected data modified to improve the code)
+- these new ai agents with memory will respect the value "Tokens:" in the main gui (same max token return value used in sending messages will be used for the memory powered agents)
 
 ## Usage
 
