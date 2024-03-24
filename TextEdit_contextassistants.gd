@@ -298,10 +298,14 @@ func _on_mnu_ai_assist_pressed(id):
 				
 				var pre = the_pre_str
 				var post = the_post_str
-
-				var the_assistant = "You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-				var the_prompt = "the code string: \"" + the_selected_text + "\""
 				
+				var openai = $"../../../../USE_OPENAI".button_pressed
+
+				var the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
+				var the_prompt = "the code string: \"" + the_selected_text + "\""
+				if openai:
+					the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
+					
 				
 				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
 				
