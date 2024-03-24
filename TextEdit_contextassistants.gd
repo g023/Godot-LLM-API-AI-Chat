@@ -261,14 +261,21 @@ func _on_mnu_ai_assist_pressed(id):
 
 
 				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+				var ai_memory_pre = int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
+				var ai_memory_post = int($"../HBoxContainer/TextEdit_ai_memory_post".text)
+
+				if ai_memory_pre < 0:
+					ai_memory_pre = 0
+				if ai_memory_post < 0:
+					ai_memory_post = 0
 
 				# only leave the last 500 characters of the pre string
-				if the_pre_str.length() > 500:
-					the_pre_str = the_pre_str.substr(the_pre_str.length()-500, 500)
+				if the_pre_str.length() > ai_memory_pre:
+					the_pre_str = the_pre_str.substr(the_pre_str.length()-ai_memory_pre, ai_memory_pre)
 				
 				# only leave the first 500 characters of the post string
-				if the_post_str.length() > 500:
-					the_post_str = the_post_str.substr(0, 500)
+				if the_post_str.length() > ai_memory_post:
+					the_post_str = the_post_str.substr(0, ai_memory_post)
 
 
 				print("*** *** *** *** *** ")
@@ -305,8 +312,8 @@ func _on_mnu_ai_assist_pressed(id):
 				var the_prompt = "the code string: \"" + the_selected_text + "\""
 				if openai:
 					the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-					
-				
+
+
 				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
 				
 				#llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)

@@ -52,6 +52,10 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - these new ai agents with memory will respect the value "Tokens:" in the main gui (same max token return value used in sending messages will be used for the memory powered agents)
 - on that last agent, ability to set a different prompt when sending to openai added
 - <https://twitter.com/g023dev/status/1771795915117891775> for a demo of intelligent code optimizer
+* March 24, 2024
+- added ability to change intelligent ai agents' pre/post memory amounts (the amount of characters they can read before and after selection)
+- last minute tweaks to export before exporting for 0.2.0 linux/win64 releases
+* note: make sure your LLM server is up and running before trying to send requests local
 
 ## Usage
 
