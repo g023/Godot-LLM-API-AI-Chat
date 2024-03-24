@@ -404,7 +404,7 @@ func _on_autocomplete(prefix):
 func llm_get_headers(openai=false):
 	var headers = []
 	if openai:
-		var api_key = $"../../../USE_OPENAI/LineEdit_API_KEY".text
+		var api_key = $"../../../../USE_OPENAI/LineEdit_API_KEY".text
 		headers = ["Content-type: application/json", "Authorization: Bearer " + api_key]
 	else:
 		headers = ["Content-type: application/json"]
