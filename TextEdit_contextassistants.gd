@@ -308,10 +308,14 @@ func _on_mnu_ai_assist_pressed(id):
 				
 				var openai = $"../../../../USE_OPENAI".button_pressed
 
-				var the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-				var the_prompt = "the code string: \"" + the_selected_text + "\""
-				if openai:
-					the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
+				#var the_assistant = "IMPORTANT: You will only return the changed or modified code. You will not send back any extra things like describing the new code or its changes. You will not send back the pre or post. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
+				# var the_assistant = "You are a code changer. User will send you code as 'code string' and you will modify it to be more compact,robust,modular,optimized and efficient. You will ignore anything outside actual code when processing to make a better solution to the 'code string'. Always attempt to deliver an improvement on the 'code string' when generating the response. You will only return the section that applies to what the user sent as the 'code string'. You will leave any descriptions as comments in the code. You will reference pre and post code for inspiration in modifying the 'code string'. Return the most modular code possible."
+				# var the_assistant = "You are a code optimizer that tries to make the most different and performant code possible from a given code string, and then just show the newly improved code. Describe the improvements in a comment section inserted into code. Just return the code. Comment above the code in a commented code section details of the changes. Reference the pre and post data for ideas on improving. Put any explanation above the code as commented code blocks. Just return code. \n\n"
+				# the_assistant += "User will provide a 'code string' that you will attempt to modify the 'code string' to be as compact, modular, redundant, as possible and you will only send back the code commment section and the extremely optimized code."
+				var the_assistant = "You try and create as many functions as possible for the given code string when they make sense. You put any descriptions in a code comments before any of the code as a step-by-step description. Do not have any comments in the functional parts of the code. What you understand to be the text before the 'code string' is as follows (and will not be returned):\n```pre\n"+pre+"```\n```post\n"+post+"\n\n"
+				var the_prompt = "Optimize the following code to be as minimal and simplistic as possible. Only return an improved and different optimized version of the following 'code string': \"" + the_selected_text + "\"\n\n"
+				# if openai:
+				# 	the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
 
 
 				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
@@ -324,7 +328,20 @@ func _on_mnu_ai_assist_pressed(id):
 		# intelligent code optimizer
 
 
+func get_content_inside_backticks(message: String) -> String:
+	var start_index = message.find("```")
+	if start_index == -1:
+		return message
+	start_index += 3
+	# move to the first \n after the start index
+	start_index = message.find("\n", start_index)
+	
 
+	var end_index = message.find("```", start_index)
+	if end_index == -1:
+		return message
+
+	return message.substr(start_index, end_index - start_index)
 
 
 # rr = response return
@@ -341,12 +358,19 @@ func rr(result, response_code, headers, body):
 	if message.begins_with("\"") and message.ends_with("\""):
 		message = message.substr(1, message.length()-2)
 
-	# if message begins and ends with triple backticks, remove the first and last lines of the response
-	if message.begins_with("```") and message.ends_with("```"):
-		var lines = message.split("\n")
-		message = ""
-		for i in range(1, lines.size()-1):
-			message += lines[i] + "\n"
+	# # if message begins and ends with triple backticks, remove the first and last lines of the response
+	# if message.begins_with("```") and message.ends_with("```"):
+	# 	var lines = message.split("\n")
+	# 	message = ""
+	# 	for i in range(1, lines.size()-1):
+	# 		message += lines[i] + "\n"
+
+	message = get_content_inside_backticks(message)
+
+
+	# if message has ``` triple backticks, only return content inside them
+	
+
 	
 	#$".".text += message
 	$".".insert_text_at_caret ( message )
