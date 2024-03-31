@@ -58,6 +58,7 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 * note: make sure your LLM server is up and running before trying to send requests local
 - fixed up intelligent assistant prompt and added a function to get all content inside some triple backticks to only fetch the code part of the response if it is in the return to func rr
 - added intelligent agent to responses: intelligent code completer which completes the code after the current position of the text cursor.
+- rewrote intelligent agent code in the assistant responses so that it reads cleaner, smaller code size, and less glitchy.
 
 ## Usage
 

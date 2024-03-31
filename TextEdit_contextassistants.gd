@@ -232,250 +232,85 @@ func _on_mnu_ai_assist_pressed(id):
 		print("ai assist context menu - intelligent code optimizer")
 		# takes previous content and post content and allows use in final prompt and assistant
 		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
+			
+			##
+
+			var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
+			var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
+			var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
+
+			var sel 		= get_selected() # pre, post, selected
+			var txt_pre 	= sel.pre
+			var txt_post 	= sel.post
+			var txt_sel 	= sel.selected
+			var txt_prompt 	= ""
+
+			if txt_sel.strip_edges() == "":
 				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_whole_text = $".".text
-				var the_selected_text = $".".get_selected_text()
-				#var the_pre_text = $".".get_selection_to_line(get_selection_line())
-				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-				print("selected_line:", get_selection_line())
-				var lines_arr = the_whole_text.split("\n")
-				var the_pre_str = ""
-				var the_post_str = ""
+				return 0
+
+			txt_pre 	= keep_end(txt_pre, ai_memory_pre)
+			txt_post	= keep_start(txt_post, ai_memory_post)
 
 
-				
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-				
-				# pre string is the text before the selected text
-				# for i in range(0, get_selection_line()): 
-				# need to redo for i to exclude the amount of lines in selected_text
-				for i in range(0, get_selection_line() - selected_text.split("\n").size()):
-					the_pre_str += lines_arr[i] + "\n"
-				# the whole text
-
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+				#var the_assistant = "You try and create as many functions as possible for the given code string when they make sense. You put any descriptions in a code comments before any of the code as a step-by-step description. Do not have any comments in the functional parts of the code. What you understand to be the text before the 'code string' is as follows (and will not be returned):\n```pre\n"+pre+"```\n```post\n"+post+"\n\n"
+				#var the_prompt = "Optimize the following code to be as minimal and simplistic as possible. Only return an improved and different optimized version of the following 'code string': \"" + the_selected_text + "\"\n\n"
 
 
-				# post string is the rest of the text after the selected text
-				for i in range(get_selection_line(), lines_arr.size()):
-					the_post_str += lines_arr[i] + "\n"
+			var txt_assistant = "You are a programming source code clarity and code tricks optimization expert."
 
+			txt_prompt 	+= "Optimize the following code to be as minimal and simplistic as possible. Only return an improved and different optimized version of the following 'code string':\n```selected\n"  + txt_sel + "\n```\n\n"
+			txt_prompt 	+= "A portion of the part that came before it was:\n```pre data\n" + txt_pre + "\n```\n\n"
+			txt_prompt 	+= "A portion of the part that came after it was:\n```post data\n" + txt_post +  "\n```\n\n"
+			print("-=-=-\r\n",txt_prompt,"-=-=-\r\n")
 
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-				var ai_memory_pre = int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
-				var ai_memory_post = int($"../HBoxContainer/TextEdit_ai_memory_post".text)
+			llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.1, 0.0, 0.0, rr)
 
-				if ai_memory_pre < 0:
-					ai_memory_pre = 0
-				if ai_memory_post < 0:
-					ai_memory_post = 0
-
-				# only leave the last 500 characters of the pre string
-				if the_pre_str.length() > ai_memory_pre:
-					the_pre_str = the_pre_str.substr(the_pre_str.length()-ai_memory_pre, ai_memory_pre)
-				
-				# only leave the first 500 characters of the post string
-				if the_post_str.length() > ai_memory_post:
-					the_post_str = the_post_str.substr(0, ai_memory_post)
-
-
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("pre:\r\n\r\n", the_pre_str)
-				print("*** *** *** *** *** ")
-				print("post:\r\n\r\n", the_post_str)
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
+			print("sent message")
+			return 1 # ignore old code
 
 
 
-				print("whole:\r\n\r\n", the_whole_text)
-				# the selected text
-				print("selected:\r\n\r\n", the_selected_text)
-
-
-				print("pre:\r\n\r\n", lines_arr)
-				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-				# first version was extremely nerdy sounding
-				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				
-				var pre = the_pre_str
-				var post = the_post_str
-				
-				var openai = $"../../../../USE_OPENAI".button_pressed
-
-				#var the_assistant = "IMPORTANT: You will only return the changed or modified code. You will not send back any extra things like describing the new code or its changes. You will not send back the pre or post. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-				# var the_assistant = "You are a code changer. User will send you code as 'code string' and you will modify it to be more compact,robust,modular,optimized and efficient. You will ignore anything outside actual code when processing to make a better solution to the 'code string'. Always attempt to deliver an improvement on the 'code string' when generating the response. You will only return the section that applies to what the user sent as the 'code string'. You will leave any descriptions as comments in the code. You will reference pre and post code for inspiration in modifying the 'code string'. Return the most modular code possible."
-				# var the_assistant = "You are a code optimizer that tries to make the most different and performant code possible from a given code string, and then just show the newly improved code. Describe the improvements in a comment section inserted into code. Just return the code. Comment above the code in a commented code section details of the changes. Reference the pre and post data for ideas on improving. Put any explanation above the code as commented code blocks. Just return code. \n\n"
-				# the_assistant += "User will provide a 'code string' that you will attempt to modify the 'code string' to be as compact, modular, redundant, as possible and you will only send back the code commment section and the extremely optimized code."
-				var the_assistant = "You try and create as many functions as possible for the given code string when they make sense. You put any descriptions in a code comments before any of the code as a step-by-step description. Do not have any comments in the functional parts of the code. What you understand to be the text before the 'code string' is as follows (and will not be returned):\n```pre\n"+pre+"```\n```post\n"+post+"\n\n"
-				var the_prompt = "Optimize the following code to be as minimal and simplistic as possible. Only return an improved and different optimized version of the following 'code string': \"" + the_selected_text + "\"\n\n"
-				# if openai:
-				# 	the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-
-
-				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
-				
-				#llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-				llm_send_short(the_assistant, the_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
+			##
+			
+			
 		else:
 			print("assistant busy")
 		
 		# intelligent code optimizer
-
-
-
-
-
-
 
 
 	if id == MENU_MAX + 10:
 		print("ai assist context menu - intelligent code completer")
 		# takes previous content and post content and allows use in final prompt and assistant
 		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			# if selected_text.strip_edges() == "":
-			# 	print("empty input. ignoring.")
-			# else:		
-			if 1:	
-				g_ai_assist_busy = true
+			g_ai_assist_busy = true
+			var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
+			var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
+			var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
+			
 
-				var the_whole_text = $".".text
-				var the_selected_text = $".".get_selected_text()
-				#var the_pre_text = $".".get_selection_to_line(get_selection_line())
-				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-				print("selected_column:", get_selection_column())
-				var lines_arr = the_whole_text.split("\n")
-				var the_pre_str = ""
-				var the_post_str = ""
+			var sel 		= get_caret() # pre, post, line, column
+			var txt_pre 	= sel.pre
+			var txt_post 	= sel.post
+			var txt_prompt 	= ""
 
-
-				
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-				
-				# pre string is the text before current position in TextEdit in godot gdscript
-				# for i in range(0, get_selection_line()): 
-				# need to redo for i to exclude the amount of lines in selected_text
-				var current_line = get_caret_line()
-				var current_column = get_caret_column()
-				
-				print("Current Line:", current_line)
-				print("Current Column:", current_column)
-				
-				print(". . . . . .")
-
-				var the_current_line = ""
-				if current_line == 0:
-					the_pre_str = ""
-				else:
-					for i in range(0, current_line):
-						the_pre_str += lines_arr[i] + "\n"
-						
-					the_current_line = lines_arr[current_line - 1]
-					the_pre_str += the_current_line.substr(0, current_column)
-					the_pre_str += "\n"
-
-				
-
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-
-
-				# post string is the rest of the text after the selected text
-				#the_post_str += the_current_line.substr(current_column, 
-				# post str is the rest of the whole text that is after the pre string
-				the_post_str += the_whole_text.substr(the_pre_str.length(), the_whole_text.length() - the_pre_str.length())
-
-
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-				var ai_memory_pre = int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
-				var ai_memory_post = int($"../HBoxContainer/TextEdit_ai_memory_post".text)
-
-				if ai_memory_pre < 0:
-					ai_memory_pre = 0
-				if ai_memory_post < 0:
-					ai_memory_post = 0
-
-				# only leave the last 500 characters of the pre string
-				if the_pre_str.length() > ai_memory_pre:
-					the_pre_str = the_pre_str.substr(the_pre_str.length()-ai_memory_pre, ai_memory_pre)
-				
-				# only leave the first 500 characters of the post string
-				if the_post_str.length() > ai_memory_post:
-					the_post_str = the_post_str.substr(0, ai_memory_post)
-
-
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("pre:\r\n\r\n", the_pre_str)
-				print("*** *** *** *** *** ")
-				print("post:\r\n\r\n", the_post_str)
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-
-
-
-				print("whole:\r\n\r\n", the_whole_text)
-				# the selected text
-				print("selected:\r\n\r\n", the_selected_text)
-
-
-				print("pre:\r\n\r\n", lines_arr)
-				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-				# first version was extremely nerdy sounding
-				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				
-				var pre = the_pre_str
-				var post = the_post_str
-				
-				var openai = $"../../../../USE_OPENAI".button_pressed
-
-				#var the_assistant = "IMPORTANT: You will only return the changed or modified code. You will not send back any extra things like describing the new code or its changes. You will not send back the pre or post. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-				# var the_assistant = "You are a code changer. User will send you code as 'code string' and you will modify it to be more compact,robust,modular,optimized and efficient. You will ignore anything outside actual code when processing to make a better solution to the 'code string'. Always attempt to deliver an improvement on the 'code string' when generating the response. You will only return the section that applies to what the user sent as the 'code string'. You will leave any descriptions as comments in the code. You will reference pre and post code for inspiration in modifying the 'code string'. Return the most modular code possible."
-				# var the_assistant = "You are a code optimizer that tries to make the most different and performant code possible from a given code string, and then just show the newly improved code. Describe the improvements in a comment section inserted into code. Just return the code. Comment above the code in a commented code section details of the changes. Reference the pre and post data for ideas on improving. Put any explanation above the code as commented code blocks. Just return code. \n\n"
-				# the_assistant += "User will provide a 'code string' that you will attempt to modify the 'code string' to be as compact, modular, redundant, as possible and you will only send back the code commment section and the extremely optimized code."
-
-				# var the_assistant = "You try and create as many functions as possible for the given code string when they make sense. You put any descriptions in a code comments before any of the code as a step-by-step description. You are a master of using only the latest versions of whatever technology you need to complete the code. Your code is built to run, and will not miss out on things. After coming up with the reply, revise and rewrite the response so only the source code shows. Do not have any comments in the functional parts of the code. What you understand to be the text before the 'code string' is as follows (and will not be returned):\n```pre\n"+pre+"```\n```post\n"+post+"\n\n"
-
-				var the_assistant = "You are a code completion agent."
-
-				var the_prompt = "Show me the code that would go in between the pre and post data and return the code. The code would be something that would be in between the pre and post code. Do not return something that exists in pre or post, but instead show some complimentary code that would extend the pre code but fit in before the post code.\n\n"
-				the_prompt += "pre:\n\n"+pre+"\n\npost:\n\n"+post+"\n\n"
-				# if openai:
-				# 	the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-
-
-				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
-				
-				#llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-				llm_send_short(the_assistant, the_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
+			txt_pre 	= keep_end(txt_pre, ai_memory_pre)
+			txt_post	= keep_start(txt_post, ai_memory_post)
+			
+			var txt_assistant = "You are a code completion agent."
+			txt_prompt 	= "Show me the code that would go in between the pre and post data and return the code. The code would be something that would be in between the pre and post code. Do not return something that exists in pre or post, but instead show some complimentary code that would extend the pre code but fit in before the post code.\n\n"
+			txt_prompt 	+= "A portion of the part that came before it was (pre data):\n```pre data\n" + txt_pre + "\n```\n"
+			txt_prompt 	+= "A portion of the part that came after it was (post data):\n```post data\n" + txt_post +  "\n```\n"
+			print("-=-=-\r\n",txt_prompt,"-=-=-\r\n")
+			
+			llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
+			
+			return 1 # ignore old code
 		else:
 			print("assistant busy")
 		
 		# intelligent code optimizer
-
-
-
-
-
-
-
 
 
 
@@ -483,108 +318,37 @@ func _on_mnu_ai_assist_pressed(id):
 		print("ai assist context menu - intelligent code repair")
 		# takes previous content and post content and allows use in final prompt and assistant
 		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
+			var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
+			var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
+			var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
+
+			var sel 		= get_selected() # pre, post, selected
+			var txt_pre 	= sel.pre
+			var txt_post 	= sel.post
+			var txt_sel 	= sel.selected
+			var txt_prompt 	= ""
+
+			if txt_sel.strip_edges() == "":
 				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_whole_text = $".".text
-				var the_selected_text = $".".get_selected_text()
-				#var the_pre_text = $".".get_selection_to_line(get_selection_line())
-				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-				print("selected_line:", get_selection_line())
-				var lines_arr = the_whole_text.split("\n")
-				var the_pre_str = ""
-				var the_post_str = ""
+				return 0
 
+			txt_pre 	= keep_end(txt_pre, ai_memory_pre)
+			txt_post	= keep_start(txt_post, ai_memory_post)
 
-				
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-				
-				# pre string is the text before the selected text
-				# for i in range(0, get_selection_line()): 
-				# need to redo for i to exclude the amount of lines in selected_text
-				for i in range(0, get_selection_line() - selected_text.split("\n").size()):
-					the_pre_str += lines_arr[i] + "\n"
-				# the whole text
+			var txt_assistant = "You are a programming source code repair expert."
 
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+			txt_prompt 	= "Find all the issues and repairs, and return the repaired code from the following 'code string': \"" + txt_sel + "\"\n\n"
+			txt_prompt 	+= "A portion of the part that came before it was:\n" + txt_pre + "\n\n"
+			txt_prompt 	+= "A portion of the part that came after it was:\n" + txt_post +  "\n\n"
+			print("-=-=-\r\n",txt_prompt,"-=-=-\r\n")
 
+			llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.1, 0.0, 0.0, rr)
 
-				# post string is the rest of the text after the selected text
-				for i in range(get_selection_line(), lines_arr.size()):
-					the_post_str += lines_arr[i] + "\n"
-
-
-				print("x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
-				var ai_memory_pre = int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
-				var ai_memory_post = int($"../HBoxContainer/TextEdit_ai_memory_post".text)
-
-				if ai_memory_pre < 0:
-					ai_memory_pre = 0
-				if ai_memory_post < 0:
-					ai_memory_post = 0
-
-				# only leave the last 500 characters of the pre string
-				if the_pre_str.length() > ai_memory_pre:
-					the_pre_str = the_pre_str.substr(the_pre_str.length()-ai_memory_pre, ai_memory_pre)
-				
-				# only leave the first 500 characters of the post string
-				if the_post_str.length() > ai_memory_post:
-					the_post_str = the_post_str.substr(0, ai_memory_post)
-
-
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("pre:\r\n\r\n", the_pre_str)
-				print("*** *** *** *** *** ")
-				print("post:\r\n\r\n", the_post_str)
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-				print("*** *** *** *** *** ")
-
-
-
-				print("whole:\r\n\r\n", the_whole_text)
-				# the selected text
-				print("selected:\r\n\r\n", the_selected_text)
-
-
-				print("pre:\r\n\r\n", lines_arr)
-				print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-				# first version was extremely nerdy sounding
-				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				
-				var pre = the_pre_str
-				var post = the_post_str
-				
-				var openai = $"../../../../USE_OPENAI".button_pressed
-
-				#var the_assistant = "IMPORTANT: You will only return the changed or modified code. You will not send back any extra things like describing the new code or its changes. You will not send back the pre or post. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-				# var the_assistant = "You are a code changer. User will send you code as 'code string' and you will modify it to be more compact,robust,modular,optimized and efficient. You will ignore anything outside actual code when processing to make a better solution to the 'code string'. Always attempt to deliver an improvement on the 'code string' when generating the response. You will only return the section that applies to what the user sent as the 'code string'. You will leave any descriptions as comments in the code. You will reference pre and post code for inspiration in modifying the 'code string'. Return the most modular code possible."
-				# var the_assistant = "You are a code optimizer that tries to make the most different and performant code possible from a given code string, and then just show the newly improved code. Describe the improvements in a comment section inserted into code. Just return the code. Comment above the code in a commented code section details of the changes. Reference the pre and post data for ideas on improving. Put any explanation above the code as commented code blocks. Just return code. \n\n"
-				# the_assistant += "User will provide a 'code string' that you will attempt to modify the 'code string' to be as compact, modular, redundant, as possible and you will only send back the code commment section and the extremely optimized code."
-				#var the_assistant = "You are a code repair assistant. You will attempt to repair a given bit of code in code string. You will add any code needed to make the code functional. You are a master of using only the latest versions of whatever technology you need to complete the code. Your code is built to run, and will not miss out on things. After coming up with the reply, revise and rewrite the response so only the source code shows. Remove any other descriptions. You will understand and apply the best code changes to make the code more robust. You will analyze and apply all repairs as necessary. You put any descriptions in a code comments before any of the code as a step-by-step description. Do not have any comments in the functional parts of the code. What you understand to be the text before the 'code string' is as follows (and will not be returned):\n```pre\n"+pre+"```\n```post\n"+post+"\n\n"
-				var the_assistant = "You are a programming source code repair expert."
-				var the_prompt = "Find all the issues and repairs, and return the repaired code from the following 'code string': \"" + the_selected_text + "\"\n\n"
-				the_prompt += "The part that came before it was:\n" + the_pre_str + "\n\n"
-				the_prompt += "The part that came after it was:\n" + the_post_str +  "\n\n"
-				# if openai:
-				# 	the_assistant = "You will only return the changed code. You will optimize a given code string. Return just the changed code string optimized and rewritten to be more modular and attempt to include new and fresh ideas. The text before the code string and the text after the code string is as follows:\n\n```pre\n"+pre+"```\n\n```post\n"+post+"\n"
-
-
-				var tokens_max = int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
-				
-				#llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-				llm_send_short(the_assistant, the_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
+			print("sent message")
+			return 1 # ignore old code
 		else:
 			print("assistant busy")
-		
+
 		# intelligent code optimizer
 
 
@@ -813,4 +577,244 @@ func llm_get_url(openai=false):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+#### BEGIN NEW :::
+
+var g_last_selected_text = "" # = $".".get_selected_text()
+var g_last_selected_pre = ""
+var g_last_selected_post = ""
+var g_last_caret_line = -1 # 
+var g_last_caret_column = -1 # 
+var g_last_caret_pre = ""
+var g_last_caret_post = ""
+
+func get_pre_text(end_line, end_column):
+	# need to remove dependence on globals
+	var ret_pre = ""
+	## BEGIN :: find PRE TEXT
+	var pre_rows = []
+	# get pre text
+	for l in range(0, end_line + 1):
+		var line = get_line(l)
+		#print("{",line,"}")
+		# throw away to the right of last line where user has selected to (from_col)
+		pre_rows.append(line)
+		# if this is last line, cut off at from_col
+		if l == end_line:
+			pre_rows[l] = pre_rows[l].substr(0, end_column)
+
+	# now recombine.. 
+	ret_pre = ""
+		# if this is endline don't add the line break
+	var arr_count = 0
+	for l in pre_rows:
+		if arr_count == end_line:
+			ret_pre += l
+		else:
+			ret_pre += l + "\n"
+		arr_count += 1
+
+	#print("pre_rows:", ret_pre,"---")
+	## -- END :: find PRE TEXT
+	return ret_pre
+
+
+func get_post_text(start_line,start_col):
+	var ret_post = ""
+	## BEGIN :: find POST TEXT
+	var post_rows = []
+	# get post text
+	for l in range(start_line, get_line_count()):
+		var line = get_line(l)
+		
+		if l == start_line:
+			if line.length() == start_col: # is our selection at end?
+				line = ""
+			
+			# now substr line if we have our selection in the middle
+			line = line.substr(start_col, line.length() - start_col)
+			
+		
+		#print("~",line,'~')
+		post_rows.append(line)
+
+
+	# now recombine..
+	ret_post = ""
+	# for l in post_rows:
+	# 	ret_post += l + "\n"
+
+	var arr_count = 0
+	for l in post_rows:
+		if arr_count == post_rows.size() - 1:
+			ret_post += l
+		else:
+			ret_post += l + "\n"
+		arr_count += 1
+
+
+	#print("post_rows:", ret_post,"---")
+	## -- END :: find POST TEXT
+	return ret_post
+
+
+
+func set_last_caret():
+	# for prompts that dont care about selected text, just the caret position
+	print("updating caret")
+	g_last_caret_line = get_caret_line()
+	g_last_caret_column = get_caret_column()
+
+	var text_pre = get_pre_text(g_last_caret_line, g_last_caret_column)
+	var text_post = get_post_text(g_last_caret_line, g_last_caret_column)
+	
+	print("------")
+	print("the pre:\n","~~"+text_pre+"~~")
+	print("the post:\n","~~"+text_post+"~~")
+	print("------")
+
+	# end set_last_caret()
+
+# update our globals on a content selection
+func set_last_selected(): 
+	# to handle caret in diff places, I think i will try and 
+	# when setting g_last_caret_line, if
+	# incrementing then we are travelling down with selection
+	# decrementing then we are travelling up with our selection
+		
+	print("updating selected text")
+	print("carets:", get_caret_count() )
+	print("caret line:", get_caret_line() ) # caret can be before the selection
+	print("caret column:", get_caret_column() )
+	print("selection line:", get_selection_line())
+	print("selection column:", get_selection_column())
+	
+	g_last_selected_text = $".".get_selected_text()
+	#
+	#var num_selected_lines = g_last_selected_text.split("\n").size()
+	#print("num selected lines:", num_selected_lines)
+#
+	#var lines_arr = $".".text.split("\n")
+	#print("num lines total:", lines_arr.size())
+	
+	#### NEW IDEA: just replace selected text with an identifier?
+	var from_row = get_selection_from_line()
+	var from_col = get_selection_from_column()
+	var to_row = get_selection_to_line()
+	var to_col = get_selection_to_column()
+
+	# Print the line and column numbers
+	print("Selection Start: Line", from_row, " Column", from_col)
+	print("Selection End: Line", to_row, " Column", to_col)
+
+## BEGIN :: find PRE TEXT
+	g_last_selected_pre = get_pre_text(from_row, from_col)
+	#print("pre_rows:", g_last_selected_pre,"---")
+## -- END :: find PRE TEXT
+
+## BEGIN :: find POST TEXT
+	g_last_selected_post = get_post_text(to_row, to_col)
+	#print("post_rows:", g_last_selected_post,"---")
+## -- END :: find POST TEXT
+		
+		
+
+
+	# var all_text = get_text()
+	
+#
+	## Print the text before and after the selection
+	#print("Text before selection:", text_before)
+	#print("Selected text:", selected_text)
+	#print("Text after selection:", text_after)
+
+func my_get_selected():
+	# return $".".get_selected_text()
+	return g_last_selected_text
+
+#### END NEW :::
+
+
+
+
+### BEGIN :: SELECTED ###
+# update our globals on a content selection
+func get_selected(): 
+	print("updating selected text")
+	print("carets:", get_caret_count() )
+	print("caret line:", get_caret_line() ) # caret can be before the selection
+	print("caret column:", get_caret_column() )
+	print("selection line:", get_selection_line())
+	print("selection column:", get_selection_column())
+	
+	g_last_selected_text = $".".get_selected_text()
+
+	#### NEW IDEA: just replace selected text with an identifier?
+	var from_row = get_selection_from_line()
+	var from_col = get_selection_from_column()
+	var to_row = get_selection_to_line()
+	var to_col = get_selection_to_column()
+
+	# Print the line and column numbers
+	print("Selection Start: Line", from_row, " Column", from_col)
+	print("Selection End: Line", to_row, " Column", to_col)
+
+	g_last_selected_pre = get_pre_text(from_row, from_col)
+	g_last_selected_post = get_post_text(to_row, to_col)
+	
+	var ret = {}
+	ret.pre = g_last_selected_pre
+	ret.post = g_last_selected_post
+	ret.selected = g_last_selected_text
+	
+	return ret
+	
+	
+### END :: SELECTED ###
+
+## BEGIN get_caret()
+func get_caret():
+	g_last_caret_line = get_caret_line()
+	g_last_caret_column = get_caret_column()
+
+	var text_pre = get_pre_text(g_last_caret_line, g_last_caret_column)
+	var text_post = get_post_text(g_last_caret_line, g_last_caret_column)
+	
+	var ret 	= {}
+	ret.pre 	= text_pre
+	ret.post 	= text_post
+	ret.line	= get_caret_line()
+	ret.column	= get_caret_column()
+	
+	return ret
+## END get_caret()
+
+# handle shrinking the pre and post text
+func keep_end(text, max_length):
+	max_length = int(max_length)
+	if max_length < 0:
+		max_length = 0
+
+	if text.length() > max_length:
+		text = text.substr(text.length()-max_length, max_length)
+	return text
+
+func keep_start(text, max_length):
+	max_length = int(max_length)
+	if max_length < 0:
+		max_length = 0
+
+	if text.length() > max_length:
+		text = text.substr(0, max_length)
+	return text
 
