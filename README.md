@@ -67,6 +67,7 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - rewrote all the simple (no pre/post memory) agent prompts for assistant.
 - added translate to spanish on assistant dropdowns.
 - Translations will automatically detect language used.
+- added translation to Hindi in Devanagari script to assistant responses ai context menu
 
 ## Usage
 
