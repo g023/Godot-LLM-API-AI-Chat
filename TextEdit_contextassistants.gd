@@ -24,32 +24,37 @@ func _ready():
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_insert_date_pressed)
 	
-	menu.add_item("Ai Assist: Selection Clean", MENU_MAX + 2)
+	# --- 
+	
+	menu.add_item("Ai Assist: Simple Clean", MENU_MAX + 2)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 	
-	
-	menu.add_item("Ai Assist: Translate to English", MENU_MAX + 3)
+	menu.add_item("Ai Assist: Simple Translate to English", MENU_MAX + 53)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 	
-	menu.add_item("Ai Assist: Translate to Chinese", MENU_MAX + 4)
+	menu.add_item("Ai Assist: Simple Translate to Chinese", MENU_MAX + 54)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 
-	menu.add_item("Ai Assist: Simplify (Compress)", MENU_MAX + 5)
-	# Connect callback.
-	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
-		
-	menu.add_item("Ai Assist: Expand (Decompress)", MENU_MAX + 6)
-	# Connect callback.
-	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
-		
-	menu.add_item("Ai Assist: Generic Code Improver", MENU_MAX + 7)
+	menu.add_item("Ai Assist: Simple Translate to Spanish", MENU_MAX + 55)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 
-	menu.add_item("Ai Assist: Generic Code Summarizer", MENU_MAX + 8)
+	menu.add_item("Ai Assist: Simple Simplify (Compress)", MENU_MAX + 5)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+		
+	menu.add_item("Ai Assist: Simple Expand (Decompress)", MENU_MAX + 6)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+		
+	menu.add_item("Ai Assist: Simple Code Improver", MENU_MAX + 7)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+
+	menu.add_item("Ai Assist: Simple Code Commenter", MENU_MAX + 8)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 
@@ -64,7 +69,7 @@ func _ready():
 	menu.add_item("Ai Assist: Intelligent Code Repair", MENU_MAX + 11)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)# menu_item
-
+	
 
 func _on_mnu_insert_date_pressed(id):
 	if id == MENU_MAX + 1:
@@ -78,285 +83,298 @@ func _on_mnu_insert_date_pressed(id):
 ### begin -- ai assistant -- selected text cleanup
 var g_ai_assist_busy = false
 func _on_mnu_ai_assist_pressed(id):
-	
-	
-	
-	
+
 	if id == MENU_MAX + 2:
-		print("ai assist context menu")
-		
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
+		return do_context('assistant-s-text-clean')
 
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				# llm_send() # old
-				var the_selected_text = $".".get_selected_text()
-				var the_assistant = "You are a text insertion agent. User will give you a string of text and you are to optimize and rework it to fix any inconsistencies. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_prompt = "the string: \"" + the_selected_text + "\""
-				# llm_send_short
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-				
-		else:
-			print("assistant busy")
-			
-			
-	if id == MENU_MAX + 3:
-		print("ai assist context menu - translate to english")
-		
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
+	if id == MENU_MAX + 53:
+		return do_context('assistant-s-text-translate-english')
 
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_selected_text = $".".get_selected_text()
-				var the_assistant = "You are a master translater that can translate from many languages to english. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_prompt = "the string: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-				
-		else:
-			print("assistant busy")
-			
-			
-			
-	if id == MENU_MAX + 4:
-		print("ai assist context menu - translate to chinese")
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_selected_text = $".".get_selected_text()
-				var the_assistant = "You are a master translater that can translate from many languages to the best translation of English to Mandaring possible. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_prompt = "the string: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 8000, 0.0, 0.0, 0.0, rr)
-				
-				
-		else:
-			print("assistant busy")
-			
-			
+	if id == MENU_MAX + 54:
+		return do_context('assistant-s-text-translate-chinese')
+		
+	if id == MENU_MAX + 55:
+		return do_context('assistant-s-text-translate-spanish')
 
 	if id == MENU_MAX + 5:
-		print("ai assist context menu - simplify")
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_selected_text = $".".get_selected_text()
-				var the_assistant = "You will at most return 3 sentences. You are a master simplification agent that understands how to rewrite a given string into a minimalist, optimized, enhanced and simplified version of itself. You use as few sentences as possible to convey the original string's idea. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_prompt = "the string: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-		else:
-			print("assistant busy")
-			
-
-
-			
+		return do_context('assistant-s-text-simplify')
 
 	if id == MENU_MAX + 6:
-		print("ai assist context menu - expand")
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_selected_text = $".".get_selected_text()
-				# first version was extremely nerdy sounding
-				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_assistant = "You are a master copywriter that understands how to communicate effectively and rewrite a given string to add more depth about the context, optimize the conveyance of the underlying context, and enhance an expanded version of the original given string. You will add a fair bit more content to best communicate the context of the string better. You will increase the string length by 50% with supporting details. You will respond at a grade 7 level. You will avoid uncommon words and phrases. You will attempt to double the returned data's length. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_prompt = "the string: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-		else:
-			print("assistant busy")
-			
-
-
+		return do_context('assistant-s-text-expander')
 
 	if id == MENU_MAX + 7:
-		print("ai assist context menu - generic code improver")
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_selected_text = $".".get_selected_text()
-				# first version was extremely nerdy sounding
-				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_assistant = "You will rewrite the code supplied in the string to be more effective, functional, and more detailed. You will attempt to add more code to improve the code in the string. You will just return the updated string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_prompt = "the code string: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-		else:
-			print("assistant busy")
-			
-
-
-
+		return do_context('assistant-s-code-improver')
 
 	if id == MENU_MAX + 8:
-		print("ai assist context menu - generic code summarizer")
-		if not g_ai_assist_busy:
-			var selected_text = $".".get_selected_text()
-			print("selected text:", selected_text)
-			if selected_text.strip_edges() == "":
-				print("empty input. ignoring.")
-			else:			
-				g_ai_assist_busy = true
-				var the_selected_text = $".".get_selected_text()
-				# first version was extremely nerdy sounding
-				#var the_assistant = "You are a master text elaboration agent that understands how to rewrite a given string into a maximalist, optimized, enhanced and expanded version of itself. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
-				var the_assistant = "You are a helpful assistant."
-				var the_prompt = "I will provide the source code for a snippet of code that does something. I want you to remove the source code and replace it with code comments describing what the code did in the order that it was done. Show you response as comments in the programming language the source code was in. Use multiline code commenting if appropriate for the programming language code is using. The source code snippet: \"" + the_selected_text + "\""
-				llm_send_short(the_assistant, the_prompt, 4000, 0.0, 0.0, 0.0, rr)
-		else:
-			print("assistant busy")
-			
-
+		return do_context('assistant-s-code-commenter')
 
 	if id == MENU_MAX + 9:
-		print("ai assist context menu - intelligent code optimizer")
-		# takes previous content and post content and allows use in final prompt and assistant
-		if not g_ai_assist_busy:
+		return do_context('assistant-i-code-optimize')
+
+	if id == MENU_MAX + 10:
+		return do_context('assistant-i-code-complete')
+
+	if id == MENU_MAX + 11:
+		return do_context('assistant-i-code-repair') # skip ole clickity clackity
+
+
+
+
+func do_context(str_id):
+	var do_it = false
+
+	var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
+	var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
+	var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
+	var txt_assistant 	= ""
+	var txt_prompt 		= ""
 			
+	if g_ai_assist_busy:
+		print("Busy doing last request. Plz try again. *")
+		return 0 # busy on another operation
+		
+	match(str_id):
+		# add more ai agents here...
+
+
+# 0-S-0
+		'assistant-s-text-simple-clean': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text clean")
+			do_it = true
 			##
-
-			var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
-			var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
-			var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
-
 			var sel 		= get_selected() # pre, post, selected
-			var txt_pre 	= sel.pre
-			var txt_post 	= sel.post
 			var txt_sel 	= sel.selected
-			var txt_prompt 	= ""
 
 			if txt_sel.strip_edges() == "":
 				print("empty input. ignoring.")
-				return 0
+				return 0 # fail and bail
 
-			txt_pre 	= keep_end(txt_pre, ai_memory_pre)
-			txt_post	= keep_start(txt_post, ai_memory_post)
-
-
-				#var the_assistant = "You try and create as many functions as possible for the given code string when they make sense. You put any descriptions in a code comments before any of the code as a step-by-step description. Do not have any comments in the functional parts of the code. What you understand to be the text before the 'code string' is as follows (and will not be returned):\n```pre\n"+pre+"```\n```post\n"+post+"\n\n"
-				#var the_prompt = "Optimize the following code to be as minimal and simplistic as possible. Only return an improved and different optimized version of the following 'code string': \"" + the_selected_text + "\"\n\n"
+			txt_assistant 	+= "You are a text rewriting and cleaning agent. User will give you a portion of selected text, and you are to optimize and rework it to fix any inconsistencies, improve its clarity, and flesh out any details that might benefit from elaboration. You will just return the fixed and improved selected text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+			txt_prompt 		+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # assistant-s-text-translate-chinese (simple = does not use pre/post memory)
 
 
-			var txt_assistant = "You are a programming source code clarity and code tricks optimization expert."
-
-			txt_prompt 	+= "Optimize the following code to be as minimal and simplistic as possible. Only return an improved and different optimized version of the following 'code string':\n```selected\n"  + txt_sel + "\n```\n\n"
-			txt_prompt 	+= "A portion of the part that came before it was:\n```pre data\n" + txt_pre + "\n```\n\n"
-			txt_prompt 	+= "A portion of the part that came after it was:\n```post data\n" + txt_post +  "\n```\n\n"
-			print("-=-=-\r\n",txt_prompt,"-=-=-\r\n")
-
-			llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.1, 0.0, 0.0, rr)
-
-			print("sent message")
-			return 1 # ignore old code
-
-
-
+# 0-S-0
+		'assistant-s-text-translate-english': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text translate english")
+			do_it = true
 			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant += "You are a master translater that can translate from many languages to the best translation of the North American English language as possible. "
+			txt_assistant += "You will return the text translated to English. Do not respond with double quotes. If there is no changes required, just return the original selected text."
+			txt_prompt 		+= "\n```selected text\n" + txt_sel + "\n```\n"
 			
-			
-		else:
-			print("assistant busy")
-		
-		# intelligent code optimizer
+			pass # assistant-s-text-translate-chinese (simple = does not use pre/post memory)
 
 
-	if id == MENU_MAX + 10:
-		print("ai assist context menu - intelligent code completer")
-		# takes previous content and post content and allows use in final prompt and assistant
-		if not g_ai_assist_busy:
-			g_ai_assist_busy = true
-			var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
-			var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
-			var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
-			
+# 0-S-0
+		'assistant-s-text-translate-chinese': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text translate chinese")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
 
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant += "You are a master translater that can translate from many languages to the best translation of the Chinese Mandarin language as possible. "
+			txt_assistant += "You will return the text translated to Chinese Mandarin. Do not respond with double quotes. If there is no changes required, just return the original selected text."
+			txt_prompt 		+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # assistant-s-text-translate-chinese (simple = does not use pre/post memory)
+
+# 0-S-0
+		'assistant-s-text-translate-spanish': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text translate spanish")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant += "You are a master translater that can translate from many languages to the best translation of the Spanish language as possible. "
+			txt_assistant += "You will return the text translated to Spanish. Do not respond with double quotes. If there is no changes required, just return the original selected text."
+			txt_prompt 	  	+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # assistant-s-text-translate-spanish (simple = does not use pre/post memory)
+
+
+# 0-S-0
+		'assistant-s-text-simplify': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text simplify")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant 	+= "You will at most return 3 sentences. You are a master simplification agent that understands how to rewrite a given selected text string into a minimalist, optimized, enhanced and simplified version of itself. You use as few sentences as possible to convey the original string's idea. You will respond at a grade 7 level of vocabulary with a goal of returning at most a few sentences. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+			txt_prompt 		+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # text-simplify (simple = does not use pre/post memory)
+
+
+# 0-S-0
+		'assistant-s-text-expander': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text expander")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant 	+= "You are a master copywriter that understands how to communicate effectively and rewrite a given selected text to add more depth about the context, optimize the conveyance of the underlying context, and enhance an expanded version of the original given selected text. You will add a fair bit more content to best communicate the context of the selected text better. You will increase the selected text length by 50% with supporting details. You will respond at a grade 7 level. You will avoid uncommon words and phrases. You will attempt to double the returned data's length. You will just return the fixed string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+			txt_prompt 		+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # text-expander (simple = does not use pre/post memory)
+
+
+# 0-S-0
+		'assistant-s-code-improver': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:code improver")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant 	+= "You will rewrite the code supplied in the string to be more effective, functional, and more detailed. You will attempt to add more code to improve the code in the string. You will just return the updated string of text and nothing else. Do not respond with double quotes. If there is no changes required, just return the original text."
+			txt_prompt 		+= "Add improvements to the following selected code:"
+			txt_prompt 		+= "\n```selected code\n" + txt_sel + "\n```\n"
+			
+			pass # simple-improver (simple = does not use pre/post memory)
+
+
+# 0-S-0
+		'assistant-s-code-commenter': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:code commenter")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant 	+= "You are an advanced code commenter that comments code. You will reply as commented code on each line."
+			txt_prompt 		+= "Add detailed comments to the following selected code:"
+			txt_prompt 		+= "\n```selected code\n" + txt_sel + "\n```\n"
+			
+			pass # simple-commenter (simple = does not use pre/post memory)
+
+
+# 0-0-0
+		'assistant-i-code-optimize':
+			print("function:do_context:assistant:i:code optimize")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_pre 	= keep_end(sel.pre, ai_memory_pre) 
+			var txt_post 	= keep_start(sel.post, ai_memory_post)
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+			
+			txt_assistant = "You are a programming source code clarity and code tricks optimization expert. You can detect the provided code selection and improve on it substantially. Your responses are rich with productive code, and well commented steps on optimizations taken. You are very good at writing code comments, and are detailed and verbose on descriptions."
+
+			txt_prompt += "The user is sending the selected code between the pre and post data to be repaired and optimized for robustness of code. "
+			txt_prompt += "The code would be something that would be in between the pre and post data. "			
+			txt_prompt += "Do not return something that exists in pre or post. Only return the repaired and optimized version of the selected code. "
+			txt_prompt += "If there is nothing to change, figure out some other optimizations or improvements to the selected code that would be helpful and return that result. "
+			txt_prompt += "The user's job and ability to feed their family depends on the best possible answer that exists. Rethink your response and respond with the best option available. "
+			txt_prompt += "Describe step-by-step as code comments."
+			txt_prompt += "\n```selected code to be repaired,optimized,improved and returned in your response\n"+txt_sel+"\n```\n"
+
+			txt_prompt 		+= "A portion of the part that came before it was (pre data):\n```pre data\n" + txt_pre + "\n```\n"
+			txt_prompt 		+= "A portion of the part that came after it was (post data):\n```post data\n" + txt_post +  "\n```\n"
+
+			pass # assistant-i-code-optimize (selection)
+					
+# 0-0-0
+		'assistant-i-code-complete':
+			print("function:do_context:assistant:i:code complete")
+			do_it = true
+			
 			var sel 		= get_caret() # pre, post, line, column
 			var txt_pre 	= sel.pre
 			var txt_post 	= sel.post
-			var txt_prompt 	= ""
 
 			txt_pre 	= keep_end(txt_pre, ai_memory_pre)
 			txt_post	= keep_start(txt_post, ai_memory_post)
 			
-			var txt_assistant = "You are a code completion agent."
-			txt_prompt 	= "Show me the code that would go in between the pre and post data and return the code. The code would be something that would be in between the pre and post code. Do not return something that exists in pre or post, but instead show some complimentary code that would extend the pre code but fit in before the post code.\n\n"
+			txt_assistant = "You are a code completion agent."
+			txt_prompt 	+= "Show me the code that would go in between the pre and post data and return the code. The code would be something that would be in between the pre and post code. Do not return something that exists in pre or post, but instead show some complimentary code that would extend the pre code but fit in before the post code.\n\n"
 			txt_prompt 	+= "A portion of the part that came before it was (pre data):\n```pre data\n" + txt_pre + "\n```\n"
 			txt_prompt 	+= "A portion of the part that came after it was (post data):\n```post data\n" + txt_post +  "\n```\n"
-			print("-=-=-\r\n",txt_prompt,"-=-=-\r\n")
-			
-			llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
-			
-			return 1 # ignore old code
-		else:
-			print("assistant busy")
+
+			pass # assistant-i-code-complete (at cursor)
 		
-		# intelligent code optimizer
-
-
-
-	if id == MENU_MAX + 11:
-		print("ai assist context menu - intelligent code repair")
-		# takes previous content and post content and allows use in final prompt and assistant
-		if not g_ai_assist_busy:
-			var tokens_max 		= int($"../../../../Node/HBoxContainer/TextEdit_tokens".text)
-			var ai_memory_pre 	= int($"../HBoxContainer/TextEdit_ai_memory_pre".text)
-			var ai_memory_post 	= int($"../HBoxContainer/TextEdit_ai_memory_post".text)
-
+# 0-0-0
+		'assistant-i-code-repair':
+			print("function:do_context:assistant:i:code repair")
+			do_it = true
+			##
 			var sel 		= get_selected() # pre, post, selected
-			var txt_pre 	= sel.pre
-			var txt_post 	= sel.post
+			var txt_pre 	= keep_end(sel.pre, ai_memory_pre) 
+			var txt_post 	= keep_start(sel.post, ai_memory_post)
 			var txt_sel 	= sel.selected
-			var txt_prompt 	= ""
 
 			if txt_sel.strip_edges() == "":
 				print("empty input. ignoring.")
-				return 0
+				return 0 # fail and bail
+				
+			txt_assistant = "You are a programming source code repair expert."
 
-			txt_pre 	= keep_end(txt_pre, ai_memory_pre)
-			txt_post	= keep_start(txt_post, ai_memory_post)
+			txt_prompt += "The user is sending the selected code between the pre and post data to be repaired and optimized for robustness of code. "
+			txt_prompt += "The code would be something that would be in between the pre and post data. "			
+			txt_prompt += "Do not return something that exists in pre or post. Only return the repaired and optimized version of the selected code. "
+			txt_prompt += "If there is nothing to change, figure out some other optimizations or improvements to the selected code that would be helpful and return that result. "
+			txt_prompt += "The user's job and ability to feed their family depends on the best possible answer that exists. Rethink your response and respond with the best option available. "
+			txt_prompt += "Describe step-by-step as code comments."
+			txt_prompt += "\n```selected code to be repaired,optimized,improved and returned in your response\n"+txt_sel+"\n```\n"
 
-			var txt_assistant = "You are a programming source code repair expert."
+			txt_prompt 		+= "A portion of the part that came before it was (pre data):\n```pre data\n" + txt_pre + "\n```\n"
+			txt_prompt 		+= "A portion of the part that came after it was (post data):\n```post data\n" + txt_post +  "\n```\n"
+			
+			##
+			pass # assistant-i-code-repair (selection)
+# 0-0-0
 
-			txt_prompt 	= "Find all the issues and repairs, and return the repaired code from the following 'code string': \"" + txt_sel + "\"\n\n"
-			txt_prompt 	+= "A portion of the part that came before it was:\n" + txt_pre + "\n\n"
-			txt_prompt 	+= "A portion of the part that came after it was:\n" + txt_post +  "\n\n"
-			print("-=-=-\r\n",txt_prompt,"-=-=-\r\n")
+	if do_it:
+		g_ai_assist_busy = true
+		# send prompt and return to func rr(result, response_code, headers, body)
+		print("-=-=-\r\n",txt_assistant,"-=-=-\r\n") # debug
+		print("-=-=-\r\n",txt_prompt,"-=-=-\r\n") # debug
 
-			llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.1, 0.0, 0.0, rr)
+		llm_send_short(txt_assistant, txt_prompt, tokens_max, 0.0, 0.0, 0.0, rr)
+		pass # done it
 
-			print("sent message")
-			return 1 # ignore old code
-		else:
-			print("assistant busy")
-
-		# intelligent code optimizer
-
-
-
-
-
-
-
+	return 1 # good result
+	pass # func do_context(str_id)
 
 ### ---
 

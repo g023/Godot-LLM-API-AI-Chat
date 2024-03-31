@@ -58,7 +58,15 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 * note: make sure your LLM server is up and running before trying to send requests local
 - fixed up intelligent assistant prompt and added a function to get all content inside some triple backticks to only fetch the code part of the response if it is in the return to func rr
 - added intelligent agent to responses: intelligent code completer which completes the code after the current position of the text cursor.
+* March 30, 2024
 - rewrote intelligent agent code in the assistant responses so that it reads cleaner, smaller code size, and less glitchy.
+* March 31, 2024
+- Made a framework for the ai agents to follow to make it easier to add ai agents to the context dropdowns
+-- see: func do_context(str_id) in res://TextEdit_contextassistants.gd
+-- reduced code bloat substantially and made the assistants more intelligent by recrafting their prompts a bit
+- rewrote all the simple (no pre/post memory) agent prompts for assistant.
+- added translate to spanish on assistant dropdowns.
+- Translations will automatically detect language used.
 
 ## Usage
 
