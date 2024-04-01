@@ -138,12 +138,11 @@ func llm_send():
 	# llm_add_message("user", g_LLM_INPUT.text)
 #### ADD SYSTEM MESSAGE HERE
 	var prompt_text = str($"../../TextEdit_LLM_INPUT".text)
-	var sys_message = "You are a master LLM (Large Language Model) prompt crafter. You will analyze whether the user is asking you to make a prompt, or whether the user is supplying a prompt and you will respond with the best prompt possible based on the given information. Really try to apply ChatGPT prompt optimizations to your response to come up with the best possible prompt. You will just return the prompt ready to be sumbitted to the LLM. Surround your prompt with triple backticks. You will craft a prompt that can get a better response from a language model. Show that prompt. \r\n"	
+	var sys_message = "You are a master prompt crafter that crafts prompts for asking an LLM (large language model) properly formatted questions. You will analyze whether the user is asking you to make a prompt, or whether the user is supplying a prompt and you will respond with the best prompt possible based on the given information. Really try to apply ChatGPT prompt optimizations to your response to come up with the best possible prompt. You will just return the prompt ready to be sumbitted to the LLM. You will craft a prompt that can get a better response from a language model. Show that prompt. Do not attempt to answer the user's prompt, but rather expand on it. Make the prompt better. You will not return code. You will return with a refactored prompt ready to be submitted for an assistant's response to give the ultimate answer. You will not ask for links, but will rather ask for source code when it comes to programming related prompts. Limit your response to 3-5 sentences max."	
 	
-	llm_add_message("system",sys_message)
-	llm_add_message("user","```prompt\n" + prompt_text + "\n```\n")
+	llm_add_message("assistant",sys_message)
+	llm_add_message("user","```Please rewrite the following prompt to be a better prompt in the format of an ai prompt for LLM:\nprompt\n" + prompt_text + "\n```\n")
 	print("assistant:\n", sys_message)
-	print("\n\nprompt:\n"+"```prompt\n" + prompt_text + "\n```\n")
 	
 	# will respect local max tokens
 	max_tokens = int($"../../../Node/HBoxContainer/TextEdit_tokens".text)
@@ -168,11 +167,12 @@ func get_content_inside_backticks(message: String) -> String:
 	start_index += 3
 	# move to the first \n after the start index
 	start_index = message.find("\n", start_index)
-
-
 	var end_index = message.find("```", start_index)
+	
 	if end_index == -1:
 		return message
+
+# ```
 
 	return message.substr(start_index, end_index - start_index)
 
@@ -183,6 +183,11 @@ func llm_response_return(result, response_code, headers, body):
 	
 	var response = JSON.parse_string(body.get_string_from_utf8())
 	var message = response["choices"][0]["message"]["content"]
+
+	# remove dub quotes
+	if message.begins_with("\"") and message.ends_with("\""):
+		message = message.substr(1, message.length()-2)
+	# only want backticked data
 	message = get_content_inside_backticks(message)
 	print('---- response:', response)
 	print(message)
