@@ -45,6 +45,14 @@ func _ready():
 	menu.add_item("Ai Assist: Simple Translate to Hindi", MENU_MAX + 56)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+	
+	menu.add_item("Ai Assist: Simple Translate to Canadian French", MENU_MAX + 57)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+	
+	menu.add_item("Ai Assist: Simple Translate to German", MENU_MAX + 58)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
 
 	menu.add_item("Ai Assist: Simple Simplify (Compress)", MENU_MAX + 5)
 	# Connect callback.
@@ -102,6 +110,12 @@ func _on_mnu_ai_assist_pressed(id):
 		
 	if id == MENU_MAX + 56:
 		return do_context('assistant-s-text-translate-hindi')
+		
+	if id == MENU_MAX + 57:
+		return do_context('assistant-s-text-translate-canadian-french')
+		
+	if id == MENU_MAX + 58:
+		return do_context('assistant-s-text-translate-german')
 
 	if id == MENU_MAX + 5:
 		return do_context('assistant-s-text-simplify')
@@ -234,6 +248,43 @@ func do_context(str_id):
 			txt_prompt 	  	+= "\n```selected text\n" + txt_sel + "\n```\n"
 			
 			pass # assistant-s-text-translate-hindi (simple = does not use pre/post memory)
+
+
+# 0-S-0
+		'assistant-s-text-translate-canadian-french': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text translate canadian french")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant += "You are a master translater that can translate from many languages to the best translation of the Canadian dialect of Quebec French language as possible. "
+			txt_assistant += "You will return the text translated to the Canadian dialect of Quebec French language. Do not respond with double quotes. If there is no changes required, just return the original selected text."
+			txt_prompt 	  	+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # assistant-s-text-translate-canadian-french (simple = does not use pre/post memory)
+
+# 0-S-0
+		'assistant-s-text-translate-german': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:s:text translate german")
+			do_it = true
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			txt_assistant += "You are a master translater that can translate from many languages to the best translation of the German language as possible. "
+			txt_assistant += "You will return the text translated to the German language. Do not respond with double quotes. If there is no changes required, just return the original selected text."
+			txt_prompt 	  	+= "\n```selected text\n" + txt_sel + "\n```\n"
+			
+			pass # assistant-s-text-translate-german (simple = does not use pre/post memory)
 
 
 # 0-S-0

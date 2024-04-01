@@ -68,6 +68,8 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - added translate to spanish on assistant dropdowns.
 - Translations will automatically detect language used.
 - added translation to Hindi in Devanagari script to assistant responses ai context menu
+- added translation to Canadian French to assistant responses ai context menu
+- added translation to German to assistant responses ai context menu
 
 ## Usage
 
