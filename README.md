@@ -70,6 +70,8 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - added translation to Hindi in Devanagari script to assistant responses ai context menu
 - added translation to Canadian French to assistant responses ai context menu
 - added translation to German to assistant responses ai context menu
+- fixed a bug where i missed a label to clean the text on the context menus.
+- updated prompt ai context to include ai agents from assistant response ai context menu
 
 ## Usage
 

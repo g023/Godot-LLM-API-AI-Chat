@@ -159,7 +159,7 @@ func do_context(str_id):
 
 
 # 0-S-0
-		'assistant-s-text-simple-clean': # s = simple (no mem) , i = intelligent (pre/post mem)
+		'assistant-s-text-clean': # s = simple (no mem) , i = intelligent (pre/post mem)
 			print("function:do_context:assistant:s:text clean")
 			do_it = true
 			##
