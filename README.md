@@ -76,6 +76,7 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - added confirmation when deleting a message
 - changed theme up a bit
 - updated 'Ai Prompt Assist' button (helps to use Ai to craft prompts). Still using old code though, but works much better.
+- for an updated feature preview of the current source code, check out: <https://twitter.com/g023dev/status/1774911784501338236>
 
 ## Usage
 
