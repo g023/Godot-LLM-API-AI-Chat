@@ -137,10 +137,13 @@ func llm_send():
 	# append to the messages array
 	# llm_add_message("user", g_LLM_INPUT.text)
 #### ADD SYSTEM MESSAGE HERE
-	var sys_message = "Rewrite the following into the best prompt possible:\r\n"	
-	sys_message += $"../../TextEdit_LLM_INPUT".text
-	llm_add_message("user",sys_message)
-	print("sending message (button_ai_prompt_assist):\r\n", sys_message)
+	var prompt_text = str($"../../TextEdit_LLM_INPUT".text)
+	var sys_message = "You are a master LLM (Large Language Model) prompt crafter. You will analyze whether the user is asking you to make a prompt, or whether the user is supplying a prompt and you will respond with the best prompt possible based on the given information. Really try to apply ChatGPT prompt optimizations to your response to come up with the best possible prompt. You will just return the prompt ready to be sumbitted to the LLM. Surround your prompt with triple backticks. You will craft a prompt that can get a better response from a language model. Show that prompt. \r\n"	
+	
+	llm_add_message("system",sys_message)
+	llm_add_message("user","```prompt\n" + prompt_text + "\n```\n")
+	print("assistant:\n", sys_message)
+	print("\n\nprompt:\n"+"```prompt\n" + prompt_text + "\n```\n")
 	
 	# will respect local max tokens
 	max_tokens = int($"../../../Node/HBoxContainer/TextEdit_tokens".text)
@@ -156,12 +159,31 @@ func llm_send():
 	pass
 
 
+
+
+func get_content_inside_backticks(message: String) -> String:
+	var start_index = message.find("```")
+	if start_index == -1:
+		return message
+	start_index += 3
+	# move to the first \n after the start index
+	start_index = message.find("\n", start_index)
+
+
+	var end_index = message.find("```", start_index)
+	if end_index == -1:
+		return message
+
+	return message.substr(start_index, end_index - start_index)
+
+
 func llm_response_return(result, response_code, headers, body):
 	print("---- received response.")
 	print("---- body:",body.get_string_from_utf8())
 	
 	var response = JSON.parse_string(body.get_string_from_utf8())
 	var message = response["choices"][0]["message"]["content"]
+	message = get_content_inside_backticks(message)
 	print('---- response:', response)
 	print(message)
 	

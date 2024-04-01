@@ -487,21 +487,8 @@ func rr(result, response_code, headers, body):
 	if message.begins_with("\"") and message.ends_with("\""):
 		message = message.substr(1, message.length()-2)
 
-	# # if message begins and ends with triple backticks, remove the first and last lines of the response
-	# if message.begins_with("```") and message.ends_with("```"):
-	# 	var lines = message.split("\n")
-	# 	message = ""
-	# 	for i in range(1, lines.size()-1):
-	# 		message += lines[i] + "\n"
-
 	message = get_content_inside_backticks(message)
 
-
-	# if message has ``` triple backticks, only return content inside them
-	
-
-	
-	#$".".text += message
 	$".".insert_text_at_caret ( message )
 	g_ai_assist_busy = false
 	

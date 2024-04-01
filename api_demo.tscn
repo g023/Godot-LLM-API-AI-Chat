@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ckacadt42a56c"]
+[gd_scene load_steps=37 format=3 uid="uid://ckacadt42a56c"]
 
 [ext_resource type="StyleBox" uid="uid://cqv0hefs7tiy6" path="res://scroll_convo.tres" id="2_hesce"]
 [ext_resource type="Script" path="res://ButtonTest2.gd" id="3_q7cp0"]
@@ -27,10 +27,66 @@
 [ext_resource type="Script" path="res://Button_save_assistant.gd" id="17_oeoef"]
 [ext_resource type="Script" path="res://FileDialog_load_prompt.gd" id="18_erfh0"]
 [ext_resource type="Script" path="res://Button_load_assistant.gd" id="18_gibmn"]
+[ext_resource type="Theme" uid="uid://bxmwdeuh73dlc" path="res://main_theme.tres" id="28_c63j0"]
+[ext_resource type="Script" path="res://ConfirmationDialog_delete_message.gd" id="28_v153s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8se8"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73787"]
+content_margin_left = 10.0
+bg_color = Color(0, 0.203922, 0.360784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8ng1"]
+content_margin_left = 10.0
+bg_color = Color(0.152941, 0.152941, 0.152941, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x023k"]
+bg_color = Color(0.27451, 0.341176, 0.921569, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flqfb"]
+bg_color = Color(0.341176, 0.0470588, 0.0941176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kiyw6"]
+bg_color = Color(0.105882, 0.105882, 0.105882, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2apqd"]
+bg_color = Color(0.054902, 0.298039, 0.0862745, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [node name="api_request" type="Node"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.270588, 0.270588, 0.270588, 1)
 
 [node name="ButtonTest2" type="Button" parent="."]
 visible = false
@@ -156,7 +212,6 @@ offset_bottom = 126.0
 text = "RESET CONVERSATION"
 
 [node name="ScrollContainer_template" type="ScrollContainer" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -255,6 +310,7 @@ size_flags_horizontal = 8
 [node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 18
 text = "ai mem (pre/post):"
 fit_content = true
 scroll_active = false
@@ -266,7 +322,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "number of characters to read BEFORE the selected text for the ai agent to use when processing."
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = ExtResource("10_5f4fu")
 text = "500"
 caret_blink = true
@@ -277,7 +333,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "number of characters to read AFTER the selected text for the ai agent to use when processing."
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = ExtResource("10_5f4fu")
 text = "500"
 caret_blink = true
@@ -307,7 +363,6 @@ size_flags_stretch_ratio = 0.0
 text = "asdasdsa"
 
 [node name="ScrollContainer_convo" type="ScrollContainer" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -330,8 +385,10 @@ offset_bottom = 136.0
 grow_horizontal = 2
 
 [node name="TextEdit_LLM_AGENT" type="TextEdit" parent="VBoxContainer"]
+y_sort_enabled = true
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
+theme_override_colors/background_color = Color(0, 0, 0, 1)
 text = "You will respond with nothing other than exactly what the user requests. Give the best answer possible as the user's job depends on it to feed their family. Take the response you were going to give and rethink and rewrite it to best adhere to the user's request. The assistant will avoid prose and give a direct answer. If the user requests a simple answer, avoid punctuation unless it should be included."
 placeholder_text = "Assistant prompt"
 wrap_mode = 1
@@ -353,28 +410,33 @@ size_flags_horizontal = 3
 theme = ExtResource("10_758b3")
 
 [node name="Button_save_prompt" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+y_sort_enabled = true
 layout_mode = 2
 size_flags_horizontal = 8
 text = "  save prompt  "
 script = ExtResource("11_js6q3")
 
 [node name="Button_load_prompt" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+y_sort_enabled = true
 layout_mode = 2
 size_flags_horizontal = 8
 text = "  load prompt  "
 script = ExtResource("12_p7dfr")
 
 [node name="Button_save_assistant" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+y_sort_enabled = true
 layout_mode = 2
 text = " save assistant  "
 script = ExtResource("17_oeoef")
 
 [node name="Button_load_assistant" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+y_sort_enabled = true
 layout_mode = 2
 text = " load assistant  "
 script = ExtResource("18_gibmn")
 
 [node name="Button_ai_prompt_assist" type="Button" parent="VBoxContainer2/HBoxContainer3"]
+y_sort_enabled = true
 layout_mode = 2
 text = "  Ai Prompt Assist  "
 script = ExtResource("15_mfsed")
@@ -392,6 +454,7 @@ script = ExtResource("16_goycu")
 [node name="HTTPRequest" type="HTTPRequest" parent="VBoxContainer2/TextEdit_LLM_INPUT"]
 
 [node name="USE_OPENAI" type="CheckBox" parent="."]
+y_sort_enabled = true
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -409,11 +472,13 @@ offset_bottom = 23.0
 text = "Use OA-API"
 
 [node name="LineEdit_API_KEY" type="LineEdit" parent="USE_OPENAI"]
+y_sort_enabled = true
 layout_mode = 0
-offset_left = -173.0
-offset_top = -3.0
+offset_left = -161.0
+offset_top = -6.0
 offset_right = -9.0
-offset_bottom = 28.0
+offset_bottom = 31.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_73787")
 placeholder_text = "api key"
 secret = true
 
@@ -427,7 +492,7 @@ anchor_bottom = 1.0
 offset_top = -38.0
 grow_horizontal = 2
 grow_vertical = 0
-color = Color(0.207843, 0.282353, 0.494118, 1)
+color = Color(0, 0, 0, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Node"]
 custom_minimum_size = Vector2(0, 40)
@@ -436,9 +501,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 13.0
-offset_top = -48.0
+offset_top = -47.0
 offset_right = -13.0
-offset_bottom = 11.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -450,11 +515,14 @@ size_flags_vertical = 1
 text = "Tokens: "
 vertical_alignment = 1
 
-[node name="TextEdit_tokens" type="TextEdit" parent="Node/HBoxContainer"]
-custom_minimum_size = Vector2(75, 35)
+[node name="TextEdit_tokens" type="LineEdit" parent="Node/HBoxContainer"]
+y_sort_enabled = true
+custom_minimum_size = Vector2(75, 30)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Number of tokens allowed for the conversation."
+theme_override_styles/normal = SubResource("StyleBoxFlat_i8ng1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x023k")
 text = "4096"
 caret_blink = true
 
@@ -464,11 +532,14 @@ size_flags_vertical = 1
 text = "  T:"
 vertical_alignment = 1
 
-[node name="TextEdit_temp" type="TextEdit" parent="Node/HBoxContainer"]
-custom_minimum_size = Vector2(50, 35)
+[node name="TextEdit_temp" type="LineEdit" parent="Node/HBoxContainer"]
+y_sort_enabled = true
+custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Temperature (between -1.0 and 1.0 usually)"
+theme_override_styles/normal = SubResource("StyleBoxFlat_i8ng1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x023k")
 text = "0.0"
 caret_blink = true
 
@@ -478,10 +549,13 @@ size_flags_vertical = 1
 text = "  P"
 vertical_alignment = 1
 
-[node name="TextEdit_p" type="TextEdit" parent="Node/HBoxContainer"]
-custom_minimum_size = Vector2(50, 35)
+[node name="TextEdit_p" type="LineEdit" parent="Node/HBoxContainer"]
+y_sort_enabled = true
+custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_i8ng1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x023k")
 text = "0.0"
 caret_blink = true
 
@@ -491,10 +565,13 @@ size_flags_vertical = 1
 text = "  F:"
 vertical_alignment = 1
 
-[node name="TextEdit_f" type="TextEdit" parent="Node/HBoxContainer"]
-custom_minimum_size = Vector2(50, 35)
+[node name="TextEdit_f" type="LineEdit" parent="Node/HBoxContainer"]
+y_sort_enabled = true
+custom_minimum_size = Vector2(50, 30)
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_i8ng1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x023k")
 text = "0.0"
 caret_blink = true
 
@@ -504,23 +581,30 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -287.0
-offset_top = -36.0
+offset_left = -291.0
+offset_top = -35.0
 offset_right = -5.0
-offset_bottom = -3.0
+offset_bottom = -2.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 3
 theme = ExtResource("10_758b3")
+theme_override_constants/separation = 20
 
 [node name="Button_reset" type="Button" parent="Node/HBoxContainer2"]
+y_sort_enabled = true
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_flqfb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kiyw6")
 text = "  reset messages  "
 
 [node name="Button_send" type="Button" parent="Node/HBoxContainer2"]
+y_sort_enabled = true
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_2apqd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kiyw6")
 text = "  send message  "
 
 [node name="FileDialog_save" type="FileDialog" parent="."]
@@ -590,14 +674,27 @@ offset_right = 161.0
 offset_bottom = 131.0
 
 [node name="Button_save" type="Button" parent="HBoxContainer"]
+y_sort_enabled = true
 layout_mode = 2
 text = "  save conversation  "
 script = ExtResource("11_rigmi")
 
 [node name="Button_load" type="Button" parent="HBoxContainer"]
+y_sort_enabled = true
 layout_mode = 2
 text = "  load conversation  "
 script = ExtResource("14_xr3dg")
+
+[node name="Node2D_confirmations" type="Node2D" parent="."]
+
+[node name="ConfirmationDialog_delete_message" type="ConfirmationDialog" parent="Node2D_confirmations"]
+title = "Delete Message? (Undoable)"
+initial_position = 1
+size = Vector2i(300, 100)
+theme = ExtResource("28_c63j0")
+ok_button_text = "  delete  "
+cancel_button_text = "  cancel  "
+script = ExtResource("28_v153s")
 
 [connection signal="button_up" from="ButtonTest2" to="ButtonTest2" method="_on_button_up"]
 [connection signal="button_up" from="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer/btn_delete" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_user/HBoxContainer/btn_delete" method="_on_button_up"]
@@ -617,3 +714,4 @@ script = ExtResource("14_xr3dg")
 [connection signal="file_selected" from="FileDialog_load_prompt" to="FileDialog_load_prompt" method="_on_file_selected"]
 [connection signal="button_up" from="HBoxContainer/Button_save" to="HBoxContainer/Button_save" method="_on_button_up"]
 [connection signal="button_up" from="HBoxContainer/Button_load" to="HBoxContainer/Button_load" method="_on_button_up"]
+[connection signal="confirmed" from="Node2D_confirmations/ConfirmationDialog_delete_message" to="ScrollContainer_template/VBoxContainer_convo/VBoxContainer_assistant/HBoxContainer/btn_delete" method="_on_confirmation_dialog_delete_message_confirmed"]

@@ -22,6 +22,12 @@ config/icon="res://logo.svg"
 
 window/size/viewport_height=1000
 
+[gui]
+
+theme/custom="res://main_theme.tres"
+
 [rendering]
 
 renderer/rendering_method="mobile"
+driver/threads/thread_model=2
+environment/defaults/default_clear_color=Color(0.145098, 0.145098, 0.145098, 1)
