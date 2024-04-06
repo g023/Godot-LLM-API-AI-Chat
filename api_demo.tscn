@@ -212,6 +212,7 @@ offset_bottom = 126.0
 text = "RESET CONVERSATION"
 
 [node name="ScrollContainer_template" type="ScrollContainer" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

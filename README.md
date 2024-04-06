@@ -77,6 +77,8 @@ AI, Chat, OpenAI, LLM, Godot, Godot 4, API, Local LLM, ChatGPT, Chatbot, Assista
 - changed theme up a bit
 - updated 'Ai Prompt Assist' button (helps to use Ai to craft prompts). Still using old code though, but works much better.
 - for an updated feature preview of the current source code, check out: <https://twitter.com/g023dev/status/1774911784501338236>
+* April 5th,2024
+- text to speech for selection in context dropdown on assistant responses. Now you can select text on the responses and have the program speak it out.
 
 ## Usage
 

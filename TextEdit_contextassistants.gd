@@ -20,6 +20,11 @@ func _ready():
 	# Add custom items.
 	menu.add_separator()
 	
+	menu.add_item("Speak Selection", MENU_MAX + 3)
+	# Connect callback.
+	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+	
+	
 	menu.add_item("Insert Date", MENU_MAX + 1)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_insert_date_pressed)
@@ -29,6 +34,8 @@ func _ready():
 	menu.add_item("Ai Assist: Simple Clean", MENU_MAX + 2)
 	# Connect callback.
 	menu.id_pressed.connect(_on_mnu_ai_assist_pressed)	
+	
+
 	
 	menu.add_item("Ai Assist: Simple Translate to English", MENU_MAX + 53)
 	# Connect callback.
@@ -98,6 +105,9 @@ func _on_mnu_ai_assist_pressed(id):
 
 	if id == MENU_MAX + 2:
 		return do_context('assistant-s-text-clean')
+
+	if id == MENU_MAX + 3:
+		return do_context('assistant-f-speak')
 
 	if id == MENU_MAX + 53:
 		return do_context('assistant-s-text-translate-english')
@@ -174,6 +184,29 @@ func do_context(str_id):
 			txt_prompt 		+= "\n```selected text\n" + txt_sel + "\n```\n"
 			
 			pass # assistant-s-text-translate-chinese (simple = does not use pre/post memory)
+
+
+
+
+# 0-S-0
+		'assistant-f-speak': # s = simple (no mem) , i = intelligent (pre/post mem)
+			print("function:do_context:assistant:f:speak")
+			# do_it = true # no external api req
+			##
+			var sel 		= get_selected() # pre, post, selected
+			var txt_sel 	= sel.selected
+
+			if txt_sel.strip_edges() == "":
+				print("empty input. ignoring.")
+				return 0 # fail and bail
+
+			var voices = DisplayServer.tts_get_voices_for_language("en")
+			var voice_id = voices[0]
+			DisplayServer.tts_stop()
+			DisplayServer.tts_speak(txt_sel, voice_id)				
+			pass # assistant-s-text-translate-chinese (simple = does not use pre/post memory)
+
+
 
 
 # 0-S-0

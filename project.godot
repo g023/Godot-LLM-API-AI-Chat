@@ -18,6 +18,10 @@ run/main_scene="res://api_demo.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://logo.svg"
 
+[audio]
+
+general/text_to_speech=true
+
 [display]
 
 window/size/viewport_height=1000
